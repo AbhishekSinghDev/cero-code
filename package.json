@@ -1,0 +1,30 @@
+{
+  "name": "cero-cli",
+  "version": "0.0.1",
+  "description": "A command line tool for AI-powered tasks.",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "cero": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsup src/index.ts --format esm,cjs --clean --minify",
+    "build:watch": "tsup src/index.ts --format esm,cjs --watch",
+    "start": "node dist/index.js"
+  },
+  "keywords": [
+    "ai",
+    "cli",
+    "cero"
+  ],
+  "author": "Abhishek Singh",
+  "license": "ISC",
+  "packageManager": "pnpm@10.15.1",
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsup": "^8.5.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
