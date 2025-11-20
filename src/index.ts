@@ -1,3 +1,10 @@
 #!/usr/bin/env node
 
-console.log("Hello, World From Cero CLI!");
+import "dotenv/config";
+import { init } from "./lib/init";
+
+function main() {
+  init();
+}
+
+main();
