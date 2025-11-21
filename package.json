@@ -8,7 +8,7 @@
     "cero": "dist/index.js"
   },
   "scripts": {
-    "dev": "NODE_ENV=development tsx watch src/index.ts",
+    "dev": "NODE_ENV=development tsx src/index.ts",
     "build": "NODE_ENV=production tsup src/index.ts --format esm --clean --minify",
     "build:watch": "tsup src/index.ts --format esm --watch",
     "start": "NODE_ENV=production node dist/index.js",
