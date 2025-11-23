@@ -66,5 +66,5 @@ export async function chatPrompt(
   }
 
   console.log(chalk.dim("\n\nChat session completed."));
-  process.exit(1);
+  process.exit(0);
 }
