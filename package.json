@@ -1,5 +1,5 @@
 {
-  "name": "cero",
+  "name": "@abhishek/cero",
   "version": "0.1.2",
   "description": "AI-powered CLI with chat and agent capabilities",
   "main": "./dist/index.js",
