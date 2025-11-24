@@ -11,7 +11,7 @@ export const NAV_LINKS = [
   { href: "#pricing", label: "Pricing" },
   { href: "/docs", label: "Docs" },
   {
-    href: "https://github.com/AbhishekSinghDev/cero-cli",
+    href: "https://github.com/AbhishekSinghDev/cerocode",
     label: "GitHub",
     external: true,
   },
@@ -85,7 +85,7 @@ export const STEPS = [
     number: "01",
     title: "Install via npm",
     description: "Get started in seconds with a simple npm install command",
-    command: "npm install -g cero-code",
+    command: "npm install -g cerocode",
     color: "#FF6B6B",
   },
   {
@@ -289,7 +289,7 @@ export const FAQ_DATA = [
   {
     question: "How do I install cero?",
     answer:
-      "Installing cero is simple! Just run 'npm install -g cero-code' in your terminal. Make sure you have Node.js 16+ installed. After installation, run 'cero login' to authenticate, and you're ready to start chatting with AI.",
+      "Installing cero is simple! Just run 'npm install -g cerocode' in your terminal. Make sure you have Node.js 16+ installed. After installation, run 'cero login' to authenticate, and you're ready to start chatting with AI.",
   },
   {
     question: "Do I need my own API keys?",
@@ -400,4 +400,4 @@ export const HERO_BADGE_TEXT = "Free • Open Source • No API Key Required";
 export const HERO_HEADLINE = "AI-Powered CLI for Developers";
 export const HERO_SUBHEADLINE =
   "Chat with LLMs, search the web, and execute code—all from your terminal";
-export const INSTALL_COMMAND = "npm install -g cero-code";
+export const INSTALL_COMMAND = "npm install -g cerocode";

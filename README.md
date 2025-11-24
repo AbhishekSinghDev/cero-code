@@ -4,7 +4,7 @@
 
 **AI-powered terminal assistant that actually gets you**
 
-[![npm version](https://img.shields.io/npm/v/cero-code.svg)](https://www.npmjs.com/package/cero-code)
+[![npm version](https://img.shields.io/npm/v/cerocode.svg)](https://www.npmjs.com/package/cerocode)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
@@ -121,20 +121,20 @@ Planned integrations to supercharge your workflow:
 - Usage analytics and insights
 - Plugin system for extensibility
 
-Want to follow along or contribute? Check out our [GitHub repository](https://github.com/AbhishekSinghDev/cero-code).
+Want to follow along or contribute? Check out our [GitHub repository](https://github.com/AbhishekSinghDev/cerocode).
 
 ## Quick Start
 
 ### Installation
 
 ```bash
-npm install -g cero-code
+npm install -g cerocode
 ```
 
 Or with pnpm:
 
 ```bash
-pnpm add -g cero-code
+pnpm add -g cerocode
 ```
 
 ### First Time Setup
@@ -238,8 +238,8 @@ The backend powering everything. Built with Next.js 16 as a full-stack API serve
 
 ```bash
 # Clone the repository
-git clone https://github.com/AbhishekSinghDev/cero-code.git
-cd cero-code
+git clone https://github.com/AbhishekSinghDev/cerocode.git
+cd cerocode
 
 # Install dependencies for all apps
 pnpm install
@@ -377,7 +377,7 @@ We welcome contributions! Here's how you can help:
 - [ ] Custom prompts and templates
 - [ ] Plugin system
 
-See our [GitHub Issues](https://github.com/AbhishekSinghDev/cero-code/issues) for detailed progress.
+See our [GitHub Issues](https://github.com/AbhishekSinghDev/cerocode/issues) for detailed progress.
 
 ## License
 
@@ -395,10 +395,10 @@ All three applications (CLI, Web, API) are licensed under the MIT License. See t
 
 - [Website](https://cero.abhisheksingh.me)
 - [Documentation](https://cero.abhisheksingh.me/docs) (coming soon)
-- [GitHub Repository](https://github.com/AbhishekSinghDev/cero-code)
-- [npm Package](https://www.npmjs.com/package/cero-code)
-- [Report Bug](https://github.com/AbhishekSinghDev/cero-code/issues)
-- [Request Feature](https://github.com/AbhishekSinghDev/cero-code/issues)
+- [GitHub Repository](https://github.com/AbhishekSinghDev/cerocode)
+- [npm Package](https://www.npmjs.com/package/cerocode)
+- [Report Bug](https://github.com/AbhishekSinghDev/cerocode/issues)
+- [Request Feature](https://github.com/AbhishekSinghDev/cerocode/issues)
 
 ## Support
 
