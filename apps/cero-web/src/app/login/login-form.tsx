@@ -5,24 +5,33 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { authClient } from "@/lib/auth-client";
 import { IconBrandGithub, IconLoader2 } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useTransition } from "react";
 
 const LoginForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const {
-    data: session,
-    isPending: sessionPending,
-    error: sessionError,
-  } = authClient.useSession();
+  const { data: session, isPending: sessionPending } = authClient.useSession();
+  const redirectUrl = searchParams.get("redirect");
+
+  useEffect(() => {
+    // Redirect authenticated users
+    if (session?.user) {
+      // Decode the redirect URL to get the full path with query params
+      const destination = redirectUrl ? decodeURIComponent(redirectUrl) : "/";
+      router.push(destination);
+    }
+  }, [session, router, redirectUrl]);
 
   const handleGitHubSignIn = async () => {
     startTransition(async () => {
+      // Decode redirect URL to ensure proper callback after OAuth
+      const callbackURL = redirectUrl ? decodeURIComponent(redirectUrl) : "/";
       await authClient.signIn.social({
         provider: "github",
-        callbackURL: "/",
+        callbackURL,
       });
     });
   };
@@ -33,19 +42,6 @@ const LoginForm = () => {
         <IconLoader2 className="animate-spin h-10 w-10 text-muted-foreground" />
       </div>
     );
-  }
-
-  if (sessionError) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-red-500">Error: {sessionError.message}</p>
-      </div>
-    );
-  }
-
-  if (session) {
-    router.push("/");
-    return;
   }
 
   return (
@@ -63,7 +59,9 @@ const LoginForm = () => {
               Welcome to <span className="text-[#FF6B6B]">CERO</span>
             </h1>
             <p className="text-muted-foreground">
-              Sign in to continue your journey
+              {redirectUrl
+                ? "Sign in to authorize your device"
+                : "Sign in to continue your journey"}
             </p>
           </div>
 

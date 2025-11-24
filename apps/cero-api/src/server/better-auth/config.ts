@@ -6,6 +6,7 @@ import { bearer, deviceAuthorization } from "better-auth/plugins";
 
 import { env } from "@/env";
 import { db } from "@/server/db";
+import { getOAuthState } from "better-auth/api";
 
 export const auth = betterAuth({
   baseURL: env.NEXT_PUBLIC_API_URL,
@@ -39,16 +40,15 @@ export const auth = betterAuth({
   ],
   hooks: {
     after: createAuthMiddleware(async (ctx) => {
-      // Only intercept OAuth callback paths
+      // Redirect OAuth callbacks from API to website
       if (ctx.path?.startsWith("/callback/")) {
-        // Get the callback URL from the state/query params
-        const url = new URL(ctx.request?.url || "");
-        const callbackURL = url.searchParams.get("currentURL") || "/";
+        const state = await getOAuthState();
+        const callbackURL = state?.callbackURL || "/";
 
-        // Redirect to the website with the callback path
-        const redirectURL = new URL(callbackURL, env.NEXT_PUBLIC_WEBSITE_URL);
+        // Build the full website URL with the callback path
+        const websiteURL = new URL(callbackURL, env.NEXT_PUBLIC_WEBSITE_URL);
 
-        throw ctx.redirect(redirectURL.toString());
+        throw ctx.redirect(websiteURL.toString());
       }
     }),
   },
