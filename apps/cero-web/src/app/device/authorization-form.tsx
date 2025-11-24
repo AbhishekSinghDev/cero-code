@@ -178,11 +178,8 @@ const DeviceAuthorizationForm = () => {
             <p className="text-sm text-muted-foreground">
               This code will expire in 30 minutes
             </p>
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex justify-center">
               <Logo className="h-5 w-5" />
-              <span className="text-xs font-medium text-muted-foreground">
-                Powered by <span className="text-[#FF6B6B]">CERO</span>
-              </span>
             </div>
           </div>
         </CardContent>

@@ -53,10 +53,13 @@ const LoginForm = () => {
       <Card className="w-full max-w-md border-2 border-border/50 bg-card/50 p-8 backdrop-blur">
         <div className="space-y-6">
           {/* Header */}
-          <div className="space-y-2 text-center flex items-center flex-col">
-            <Logo className="h-12 w-12" />
+          <div className="space-y-2 text-center">
+            <div className="flex justify-center mb-4">
+              <Logo className="h-12 w-12" showText={false} />
+            </div>
             <h1 className="text-3xl font-bold tracking-tight text-foreground">
-              Welcome to <span className="text-[#FF6B6B]">CERO</span>
+              Welcome to <span className="text-muted-foreground">cero</span>
+              <span className="text-[#FF6B6B]">code</span>
             </h1>
             <p className="text-muted-foreground">
               {redirectUrl
