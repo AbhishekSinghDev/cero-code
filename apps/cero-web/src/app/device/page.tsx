@@ -3,13 +3,7 @@ import DeviceAuthorizationForm from "./authorization-form";
 
 const DeviceAuthorizationPage = () => {
   return (
-    <Suspense
-      fallback={
-        <div className="flex min-h-screen items-center justify-center">
-          Loading...
-        </div>
-      }
-    >
+    <Suspense fallback={null}>
       <DeviceAuthorizationForm />
     </Suspense>
   );

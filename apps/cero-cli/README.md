@@ -4,7 +4,7 @@
 
 **AI-powered terminal assistant that doesn't suck**
 
-[![npm version](https://img.shields.io/npm/v/cero-code.svg)](https://www.npmjs.com/package/cero-code)
+[![npm version](https://img.shields.io/npm/v/cerocode.svg)](https://www.npmjs.com/package/cerocode)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 [Installation](#installation) • [Usage](#usage) • [Commands](#commands) • [How it Works](#how-it-works)
@@ -20,13 +20,13 @@ Cero is a CLI tool that brings AI chat capabilities directly to your terminal. N
 ## Installation
 
 ```bash
-npm install -g cero-code
+npm install -g cerocode
 ```
 
 Or if you're using pnpm:
 
 ```bash
-pnpm add -g cero-code
+pnpm add -g cerocode
 ```
 
 ## Quick Start
@@ -133,7 +133,7 @@ We're actively building features that'll make Cero your go-to terminal assistant
 
 - **And more...** — We're just getting started. File operations, git integration, custom tools — lots of ideas in the pipeline.
 
-Want to follow along or contribute? Check out our [GitHub repository](https://github.com/AbhishekSinghDev/cero-code).
+Want to follow along or contribute? Check out our [GitHub repository](https://github.com/AbhishekSinghDev/cerocode).
 
 ## Requirements
 
@@ -146,8 +146,8 @@ Want to contribute or run this locally?
 
 ```bash
 # Clone the repo
-git clone https://github.com/AbhishekSinghDev/cero-code.git
-cd cero-code
+git clone https://github.com/AbhishekSinghDev/cerocode.git
+cd cerocode
 
 # Install dependencies
 pnpm install

@@ -1,5 +1,5 @@
 {
-  "name": "cero-code",
+  "name": "cerocode",
   "version": "0.1.4",
   "description": "AI-powered CLI with chat and agent capabilities",
   "main": "./dist/index.js",
@@ -28,7 +28,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AbhishekSinghDev/cero-cli.git"
+    "url": "git+https://github.com/AbhishekSinghDev/cerocode.git"
   },
   "files": [
     "dist",

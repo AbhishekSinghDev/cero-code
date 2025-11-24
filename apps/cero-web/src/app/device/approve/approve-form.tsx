@@ -19,16 +19,10 @@ import {
   IconShieldCheck,
   IconX,
 } from "@tabler/icons-react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-
-type DeviceInfo = {
-  userCode: string;
-  clientId?: string;
-  scope?: string;
-  expiresAt?: Date;
-};
 
 export default function ApproveDeviceAuthorization() {
   const { data: session } = authClient.useSession();
@@ -38,50 +32,15 @@ export default function ApproveDeviceAuthorization() {
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [deviceInfo, setDeviceInfo] = useState<DeviceInfo | null>(null);
-  const [isLoadingDevice, setIsLoadingDevice] = useState(true);
 
   useEffect(() => {
     // Redirect to login if not authenticated
-    if (!session?.user && !isLoadingDevice) {
-      router.push(`/login?redirect=/device/approve?user_code=${userCode}`);
+    if (!session?.user) {
+      const currentPath = `/device/approve?user_code=${userCode}`;
+      const redirectUrl = encodeURIComponent(currentPath);
+      router.push(`/login?redirect=${redirectUrl}`);
     }
-  }, [session, router, userCode, isLoadingDevice]);
-
-  useEffect(() => {
-    // Fetch device information
-    const fetchDeviceInfo = async () => {
-      if (!userCode) {
-        setError("Invalid device code");
-        setIsLoadingDevice(false);
-        return;
-      }
-
-      try {
-        const response = await authClient.device({
-          query: { user_code: userCode },
-        });
-
-        if (response.data) {
-          setDeviceInfo({
-            userCode,
-            // These properties may or may not be returned
-            clientId: (response.data as any).clientId,
-            scope: (response.data as any).scope,
-            expiresAt: (response.data as any).expiresAt
-              ? new Date((response.data as any).expiresAt)
-              : undefined,
-          });
-        }
-      } catch (err) {
-        setError("Failed to load device information");
-      } finally {
-        setIsLoadingDevice(false);
-      }
-    };
-
-    fetchDeviceInfo();
-  }, [userCode]);
+  }, [session, router, userCode]);
 
   const handleApprove = async () => {
     if (!userCode) return;
@@ -90,19 +49,28 @@ export default function ApproveDeviceAuthorization() {
     setError(null);
 
     try {
-      await authClient.device.approve({
+      const { data, error } = await authClient.device.approve({
         userCode: userCode,
       });
 
-      toast.success("Device approved successfully!", {
-        description: "You can now return to your device",
-      });
+      if (data?.success) {
+        toast.success("Device approved successfully!", {
+          description: "You can now return to your device",
+        });
+      }
+
+      if (error) {
+        setError("Failed to approve device. Please try again.");
+        toast.error("Failed to approve device");
+        return;
+      }
 
       // Redirect after a short delay
       setTimeout(() => {
         router.push("/");
       }, 2000);
     } catch (err) {
+      console.error(err);
       setError("Failed to approve device. Please try again.");
       toast.error("Failed to approve device");
     } finally {
@@ -128,27 +96,13 @@ export default function ApproveDeviceAuthorization() {
         router.push("/");
       }, 1500);
     } catch (err) {
+      console.error(err);
       setError("Failed to deny device. Please try again.");
       toast.error("Failed to deny device");
     } finally {
       setIsProcessing(false);
     }
   };
-
-  if (isLoadingDevice) {
-    return (
-      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-background to-muted/20 px-4">
-        <div className="flex flex-col items-center gap-4">
-          <IconLoader2 className="h-8 w-8 animate-spin text-[#FF6B6B]" />
-          <p className="text-muted-foreground">Loading device information...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!session?.user) {
-    return null; // Will redirect via useEffect
-  }
 
   if (!userCode || error) {
     return (
@@ -173,10 +127,6 @@ export default function ApproveDeviceAuthorization() {
       </div>
     );
   }
-
-  // Format user code for display
-  const formattedCode =
-    deviceInfo?.userCode.match(/.{1,4}/g)?.join("-") || userCode;
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-background to-muted/20 px-4">
@@ -205,23 +155,25 @@ export default function ApproveDeviceAuthorization() {
           {/* User Info */}
           <div className="rounded-lg border bg-muted/50 p-4 space-y-3">
             <div className="flex items-center gap-3">
-              {session.user.image ? (
-                <img
+              {session?.user.image ? (
+                <Image
                   src={session.user.image}
                   alt={session.user.name || "User"}
+                  height={1000}
+                  width={1000}
                   className="h-10 w-10 rounded-full ring-2 ring-[#FF6B6B]/20"
                 />
               ) : (
                 <div className="h-10 w-10 rounded-full bg-[#FF6B6B]/20 flex items-center justify-center">
                   <span className="text-[#FF6B6B] font-semibold">
-                    {session.user.name?.[0]?.toUpperCase() || "U"}
+                    {session?.user.name?.[0]?.toUpperCase() || "U"}
                   </span>
                 </div>
               )}
               <div className="flex-1">
-                <p className="font-medium text-sm">{session.user.name}</p>
+                <p className="font-medium text-sm">{session?.user.name}</p>
                 <p className="text-xs text-muted-foreground">
-                  {session.user.email}
+                  {session?.user.email}
                 </p>
               </div>
             </div>
@@ -235,28 +187,10 @@ export default function ApproveDeviceAuthorization() {
             </div>
             <div className="rounded-lg border bg-background p-4">
               <p className="text-center text-2xl font-mono font-semibold tracking-widest text-[#FF6B6B]">
-                {formattedCode}
+                {userCode.match(/.{1,4}/g)?.join("-")}
               </p>
             </div>
           </div>
-
-          {/* Additional Info */}
-          {(deviceInfo?.clientId || deviceInfo?.scope) && (
-            <div className="rounded-lg border bg-muted/30 p-4 space-y-2">
-              {deviceInfo.clientId && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Client ID:</span>
-                  <span className="font-medium">{deviceInfo.clientId}</span>
-                </div>
-              )}
-              {deviceInfo.scope && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Scope:</span>
-                  <span className="font-medium">{deviceInfo.scope}</span>
-                </div>
-              )}
-            </div>
-          )}
 
           {error && (
             <Alert variant="destructive">
@@ -323,11 +257,8 @@ export default function ApproveDeviceAuthorization() {
               Only approve if you recognize this request and are actively trying
               to sign in from another device.
             </p>
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex justify-center">
               <Logo className="h-5 w-5" />
-              <span className="text-xs font-medium text-muted-foreground">
-                Powered by <span className="text-[#FF6B6B]">CERO</span>
-              </span>
             </div>
           </div>
         </CardContent>

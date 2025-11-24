@@ -33,7 +33,6 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link href="/" className="mb-4 flex items-center space-x-2">
               <Logo />
-              <span className="text-xl font-bold">CERO</span>
             </Link>
             <p className="mb-6 max-w-xs text-sm text-muted-foreground">
               AI-powered CLI tool for developers. Chat with LLMs, search the
@@ -70,7 +69,7 @@ export function Footer() {
                 {section.links.map((link, linkIndex) => (
                   <li key={linkIndex}>
                     <Link
-                      href={link.href as any}
+                      href={link.href}
                       className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                     >
                       {link.label}
@@ -87,7 +86,8 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} cero. All rights reserved. • Built by{" "}
+            © {new Date().getFullYear()} cerocode. All rights reserved. • Built
+            by{" "}
             <Link
               href={ME.portfolioUrl as Route}
               target="_blank"
@@ -105,7 +105,7 @@ export function Footer() {
               return IconComponent ? (
                 <Link
                   key={index}
-                  href={social.href as any}
+                  href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground transition-colors hover:text-foreground"

@@ -5,24 +5,33 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { authClient } from "@/lib/auth-client";
 import { IconBrandGithub, IconLoader2 } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useTransition } from "react";
 
 const LoginForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const {
-    data: session,
-    isPending: sessionPending,
-    error: sessionError,
-  } = authClient.useSession();
+  const { data: session, isPending: sessionPending } = authClient.useSession();
+  const redirectUrl = searchParams.get("redirect");
+
+  useEffect(() => {
+    // Redirect authenticated users
+    if (session?.user) {
+      // Decode the redirect URL to get the full path with query params
+      const destination = redirectUrl ? decodeURIComponent(redirectUrl) : "/";
+      router.push(destination);
+    }
+  }, [session, router, redirectUrl]);
 
   const handleGitHubSignIn = async () => {
     startTransition(async () => {
+      // Decode redirect URL to ensure proper callback after OAuth
+      const callbackURL = redirectUrl ? decodeURIComponent(redirectUrl) : "/";
       await authClient.signIn.social({
         provider: "github",
-        callbackURL: "/",
+        callbackURL,
       });
     });
   };
@@ -35,19 +44,6 @@ const LoginForm = () => {
     );
   }
 
-  if (sessionError) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-red-500">Error: {sessionError.message}</p>
-      </div>
-    );
-  }
-
-  if (session) {
-    router.push("/");
-    return;
-  }
-
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-background to-muted/20 px-4">
       {/* Decorative gradient orbs */}
@@ -57,13 +53,18 @@ const LoginForm = () => {
       <Card className="w-full max-w-md border-2 border-border/50 bg-card/50 p-8 backdrop-blur">
         <div className="space-y-6">
           {/* Header */}
-          <div className="space-y-2 text-center flex items-center flex-col">
-            <Logo className="h-12 w-12" />
+          <div className="space-y-2 text-center">
+            <div className="flex justify-center mb-4">
+              <Logo className="h-12 w-12" showText={false} />
+            </div>
             <h1 className="text-3xl font-bold tracking-tight text-foreground">
-              Welcome to <span className="text-[#FF6B6B]">CERO</span>
+              Welcome to <span className="text-muted-foreground">cero</span>
+              <span className="text-[#FF6B6B]">code</span>
             </h1>
             <p className="text-muted-foreground">
-              Sign in to continue your journey
+              {redirectUrl
+                ? "Sign in to authorize your device"
+                : "Sign in to continue your journey"}
             </p>
           </div>
 

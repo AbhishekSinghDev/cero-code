@@ -10,67 +10,77 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import { deviceAuthorizationSchema } from "@/lib/zod-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   IconAlertCircle,
   IconDeviceMobile,
   IconLoader2,
 } from "@tabler/icons-react";
-import { useState, type FormEvent } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 const DeviceAuthorizationForm = () => {
-  const [userCode, setUserCode] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError(null);
-    setIsLoading(true);
+  const form = useForm({
+    resolver: zodResolver(deviceAuthorizationSchema),
+    defaultValues: {
+      userCode: "",
+    },
+  });
 
-    try {
-      // Format the code: remove dashes and convert to uppercase
-      const formattedCode = userCode.trim().replace(/-/g, "").toUpperCase();
+  const onSubmit = useCallback(
+    async (data: { userCode: string }) => {
+      try {
+        const response = await authClient.device({
+          query: { user_code: data.userCode },
+        });
 
-      if (!formattedCode) {
-        setError("Please enter a device code");
-        setIsLoading(false);
-        return;
+        console.log("Device authorization response:", response);
+
+        if (response.data) {
+          router.push(`/device/approve?user_code=${data.userCode}`);
+        }
+
+        if (response.error) {
+          form.setError("root", {
+            message:
+              response.error.error_description ||
+              "An error occurred. Please try again.",
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        form.setError("root", {
+          message: "Invalid or expired code. Please check and try again.",
+        });
       }
+    },
+    [router, form]
+  );
 
-      // Check if the code is valid using GET /device endpoint
-      const response = await authClient.device({
-        query: { user_code: formattedCode },
-      });
-
-      if (response.data) {
-        // Redirect to approval page
-        window.location.href = `/device/approve?user_code=${formattedCode}`;
-      }
-    } catch (err) {
-      setError("Invalid or expired code. Please check and try again.");
-    } finally {
-      setIsLoading(false);
+  // Auto-submit if user_code is in query params
+  useEffect(() => {
+    const userCode = searchParams.get("user_code");
+    if (userCode && !form.formState.isSubmitting) {
+      form.setValue("userCode", userCode);
+      form.handleSubmit(onSubmit)();
     }
-  };
-
-  // Format input as user types (add dash after 4 characters)
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.toUpperCase().replace(/-/g, "");
-
-    // Limit to 8 characters (4-4 format)
-    if (value.length > 8) {
-      value = value.slice(0, 8);
-    }
-
-    // Add dash after 4 characters
-    if (value.length > 4) {
-      value = `${value.slice(0, 4)}-${value.slice(4)}`;
-    }
-
-    setUserCode(value);
-  };
+  }, [searchParams, form, onSubmit]);
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-background to-muted/20 px-4">
@@ -96,54 +106,62 @@ const DeviceAuthorizationForm = () => {
         </CardHeader>
 
         <CardContent className="space-y-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label
-                htmlFor="device-code"
-                className="text-sm font-medium text-foreground"
-              >
-                Device Code
-              </label>
-              <Input
-                id="device-code"
-                type="text"
-                value={userCode}
-                onChange={handleInputChange}
-                placeholder="ABCD-1234"
-                className="text-center text-lg tracking-widest font-mono h-12"
-                disabled={isLoading}
-                maxLength={9} // 8 chars + 1 dash
-                autoComplete="off"
-                autoFocus
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="userCode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Device Code</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="ABCD-1234"
+                        type="text"
+                        className="text-center text-lg tracking-widest font-mono h-12"
+                        disabled={form.formState.isSubmitting}
+                        maxLength={9}
+                        autoComplete="off"
+                        autoFocus
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Enter the 8-character code shown on your device
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <p className="text-xs text-muted-foreground text-center">
-                Enter the 8-character code shown on your device
-              </p>
-            </div>
 
-            {error && (
-              <Alert variant="destructive">
-                <IconAlertCircle className="h-4 w-4" />
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full bg-[#FF6B6B] hover:bg-[#FF6B6B]/90"
-              disabled={isLoading || !userCode}
-            >
-              {isLoading ? (
-                <>
-                  <IconLoader2 className="animate-spin mr-2 h-5 w-5" />
-                  Verifying...
-                </>
-              ) : (
-                "Continue"
+              {form.formState.errors.root && (
+                <Alert variant="destructive">
+                  <IconAlertCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    {form.formState.errors.root.message}
+                  </AlertDescription>
+                </Alert>
               )}
-            </Button>
-          </form>
+
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full bg-[#FF6B6B] hover:bg-[#FF6B6B]/90"
+                disabled={
+                  form.formState.isSubmitting || !form.formState.isDirty
+                }
+              >
+                {form.formState.isSubmitting ? (
+                  <>
+                    <IconLoader2 className="animate-spin mr-2 h-5 w-5" />
+                    Verifying...
+                  </>
+                ) : (
+                  "Continue"
+                )}
+              </Button>
+            </form>
+          </Form>
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -160,11 +178,8 @@ const DeviceAuthorizationForm = () => {
             <p className="text-sm text-muted-foreground">
               This code will expire in 30 minutes
             </p>
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex justify-center">
               <Logo className="h-5 w-5" />
-              <span className="text-xs font-medium text-muted-foreground">
-                Powered by <span className="text-[#FF6B6B]">CERO</span>
-              </span>
             </div>
           </div>
         </CardContent>

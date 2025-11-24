@@ -56,9 +56,8 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
+        <Link href="/">
           <Logo />
-          <span className="text-xl font-bold">CERO</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -163,30 +162,8 @@ export function Navbar() {
               <div className="flex flex-col h-full">
                 {/* Header with logo */}
                 <div className="border-b px-6 py-4">
-                  <Link
-                    href="/"
-                    className="flex items-center space-x-2"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <div className="relative h-6 w-6">
-                      <svg
-                        viewBox="0 0 40 40"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-full w-full"
-                      >
-                        <path
-                          d="M30 10 L30 25 L25 28 L10 28 L10 25 L10 15 L15 12 L20 12 L20 15 L15 15 L15 23 L25 23 L25 13 L20 13 L20 10 Z"
-                          fill="#FF6B6B"
-                        />
-                        <path d="M30 10 L35 7 L35 22 L30 25 Z" fill="#374151" />
-                        <path
-                          d="M15 12 L20 9 L35 9 L30 10 L20 10 Z"
-                          fill="#FF8888"
-                        />
-                      </svg>
-                    </div>
-                    <span className="text-lg font-bold">cero</span>
+                  <Link href="/" onClick={() => setIsOpen(false)}>
+                    <Logo />
                   </Link>
                 </div>
 
