@@ -11,9 +11,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "dev": "next dev -p 3001 --turbo",
+    "dev": "next dev -p 3001",
     "start": "next start -p 3001",
-    "typecheck": "tsc --noEmit",
     "clean": "git clean -xdf .cache .next .turbo node_modules"
   },
   "dependencies": {

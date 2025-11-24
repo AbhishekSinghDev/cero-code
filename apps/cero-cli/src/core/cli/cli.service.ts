@@ -1,12 +1,11 @@
+import { setupAuthCommands } from "@cli/commands/auth.command";
+import { setupChatCommands } from "@cli/commands/chat.command";
 import { ME } from "@core/config/constants";
 import chalk from "chalk";
 import { program } from "commander";
 import figlet from "figlet";
 
-import { setupAuthCommands } from "@cli/commands/auth.command";
-import { setupChatCommands } from "@cli/commands/chat.command";
-
-import PackageJson from "../../../package.json" assert { type: "json" };
+import PackageJson from "../../../package.json";
 
 export class CLIService {
   constructor() {
@@ -15,9 +14,7 @@ export class CLIService {
   }
 
   private displayBanner(): void {
-    console.log(
-      chalk.cyan(figlet.textSync("CERO", { horizontalLayout: "full" }))
-    );
+    console.log(chalk.cyan(figlet.textSync("CERO", { horizontalLayout: "full" })));
     console.log(chalk.gray("─".repeat(50)));
     console.log(
       chalk.white.bold("AI-Powered CLI") +

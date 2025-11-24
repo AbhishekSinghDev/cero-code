@@ -1,11 +1,11 @@
 "use client";
 
+import { IconCheck, IconCopy } from "@tabler/icons-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CODE_EXAMPLES } from "@/lib/constant";
-import { IconCheck, IconCopy } from "@tabler/icons-react";
-import { useState } from "react";
 
 export function CodeExamples() {
   const [copiedIndex, setCopiedIndex] = useState<string | null>(null);
@@ -47,19 +47,13 @@ export function CodeExamples() {
                   <div className="border-b bg-muted/50 px-6 py-4">
                     <div className="flex items-start justify-between">
                       <div>
-                        <h3 className="text-lg font-bold text-foreground">
-                          {example.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {example.description}
-                        </p>
+                        <h3 className="text-lg font-bold text-foreground">{example.title}</h3>
+                        <p className="text-sm text-muted-foreground">{example.description}</p>
                       </div>
                       <Button
                         size="sm"
                         variant="ghost"
-                        onClick={() =>
-                          copyToClipboard(example.code, example.id)
-                        }
+                        onClick={() => copyToClipboard(example.code, example.id)}
                         className="shrink-0"
                       >
                         {copiedIndex === example.id ? (

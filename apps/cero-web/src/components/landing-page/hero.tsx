@@ -1,14 +1,10 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  HERO_BADGE_TEXT,
-  HERO_HEADLINE,
-  HERO_SUBHEADLINE,
-} from "@/lib/constant";
 import { IconBook, IconDownload } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { HERO_BADGE_TEXT, HERO_HEADLINE, HERO_SUBHEADLINE } from "@/lib/constant";
 import { Card } from "../ui/card";
 
 export function Hero() {
@@ -74,12 +70,7 @@ The 'await' keyword pauses execution until the Promise resolves!`;
                 <IconDownload className="ml-2 h-5 w-5" />
               </a>
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="text-base sm:text-lg"
-              asChild
-            >
+            <Button size="lg" variant="outline" className="text-base sm:text-lg" asChild>
               <a href="/docs">
                 <IconBook className="mr-2 h-5 w-5" />
                 View Documentation
@@ -94,9 +85,7 @@ The 'await' keyword pauses execution until the Promise resolves!`;
                 <div className="h-3 w-3 rounded-full bg-red-500" />
                 <div className="h-3 w-3 rounded-full bg-yellow-500" />
                 <div className="h-3 w-3 rounded-full bg-green-500" />
-                <span className="ml-2 text-xs text-muted-foreground">
-                  terminal
-                </span>
+                <span className="ml-2 text-xs text-muted-foreground">terminal</span>
               </div>
             </div>
             <div className="p-6">

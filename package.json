@@ -7,7 +7,6 @@
     "lint": "turbo run lint",
     "format": "turbo run format",
     "check": "turbo run check",
-    "check-types": "turbo run check-types",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean"
   },

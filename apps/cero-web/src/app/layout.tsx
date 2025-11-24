@@ -1,9 +1,9 @@
 import "@/styles/globals.css";
 
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "cero - AI-Powered CLI for Developers",
@@ -19,9 +19,7 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       className={`${spaceGrotesk.className} scroll-smooth`}

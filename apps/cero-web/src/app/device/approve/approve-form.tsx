@@ -1,16 +1,5 @@
 "use client";
 
-import Logo from "@/components/shared/logo";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { authClient } from "@/lib/auth-client";
 import {
   IconAlertCircle,
   IconCheck,
@@ -23,6 +12,17 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import Logo from "@/components/shared/logo";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { authClient } from "@/lib/auth-client";
 
 export default function ApproveDeviceAuthorization() {
   const { data: session } = authClient.useSession();
@@ -111,9 +111,7 @@ export default function ApproveDeviceAuthorization() {
           <CardContent className="pt-6">
             <Alert variant="destructive">
               <IconAlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                {error || "Invalid device code"}
-              </AlertDescription>
+              <AlertDescription>{error || "Invalid device code"}</AlertDescription>
             </Alert>
             <Button
               onClick={() => router.push("/device")}
@@ -142,9 +140,7 @@ export default function ApproveDeviceAuthorization() {
             </div>
           </div>
           <div className="space-y-2">
-            <CardTitle className="text-2xl font-bold">
-              Authorize Device
-            </CardTitle>
+            <CardTitle className="text-2xl font-bold">Authorize Device</CardTitle>
             <CardDescription className="text-base">
               A device is requesting access to your account
             </CardDescription>
@@ -172,9 +168,7 @@ export default function ApproveDeviceAuthorization() {
               )}
               <div className="flex-1">
                 <p className="font-medium text-sm">{session?.user.name}</p>
-                <p className="text-xs text-muted-foreground">
-                  {session?.user.email}
-                </p>
+                <p className="text-xs text-muted-foreground">{session?.user.email}</p>
               </div>
             </div>
           </div>
@@ -246,16 +240,14 @@ export default function ApproveDeviceAuthorization() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                Secure Authorization
-              </span>
+              <span className="bg-card px-2 text-muted-foreground">Secure Authorization</span>
             </div>
           </div>
 
           <div className="text-center space-y-2">
             <p className="text-xs text-muted-foreground">
-              Only approve if you recognize this request and are actively trying
-              to sign in from another device.
+              Only approve if you recognize this request and are actively trying to sign in
+              from another device.
             </p>
             <div className="flex justify-center">
               <Logo className="h-5 w-5" />

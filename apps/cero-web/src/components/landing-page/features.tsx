@@ -1,5 +1,6 @@
 "use client";
 
+import { IconDatabase, IconMessageCircle, IconWorld } from "@tabler/icons-react";
 import {
   Card,
   CardContent,
@@ -8,11 +9,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  IconDatabase,
-  IconMessageCircle,
-  IconWorld,
-} from "@tabler/icons-react";
 
 export function Features() {
   return (
@@ -22,8 +18,7 @@ export function Features() {
           {/* Section Header */}
           <div className="mb-12 text-center">
             <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
-              Everything You Need in{" "}
-              <span className="text-[#FF6B6B]">One Command</span>
+              Everything You Need in <span className="text-[#FF6B6B]">One Command</span>
             </h2>
             <p className="text-lg text-muted-foreground md:text-xl">
               Powerful AI capabilities designed for developer workflows
@@ -54,13 +49,10 @@ export function Features() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[#FF6B6B]/10">
                     <IconMessageCircle className="h-6 w-6 text-[#FF6B6B]" />
                   </div>
-                  <CardTitle className="text-2xl">
-                    Direct LLM Conversations
-                  </CardTitle>
+                  <CardTitle className="text-2xl">Direct LLM Conversations</CardTitle>
                   <CardDescription className="text-base">
-                    Ask questions and get instant AI responses right in your
-                    terminal. Perfect for quick coding help, explanations, and
-                    debugging assistance.
+                    Ask questions and get instant AI responses right in your terminal. Perfect
+                    for quick coding help, explanations, and debugging assistance.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -93,13 +85,10 @@ export function Features() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[#06B6D4]/10">
                     <IconWorld className="h-6 w-6 text-[#06B6D4]" />
                   </div>
-                  <CardTitle className="text-2xl">
-                    Internet Search & Code Execution
-                  </CardTitle>
+                  <CardTitle className="text-2xl">Internet Search & Code Execution</CardTitle>
                   <CardDescription className="text-base">
-                    Enable agent mode to search the web for current information
-                    and execute code snippets. Get real-time data and validated
-                    solutions.
+                    Enable agent mode to search the web for current information and execute
+                    code snippets. Get real-time data and validated solutions.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -131,13 +120,10 @@ Source: nextjs.org/blog/next-14`}</code>
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[#374151]/10">
                     <IconDatabase className="h-6 w-6 text-[#374151]" />
                   </div>
-                  <CardTitle className="text-2xl">
-                    Session History & Search
-                  </CardTitle>
+                  <CardTitle className="text-2xl">Session History & Search</CardTitle>
                   <CardDescription className="text-base">
-                    All conversations are automatically saved and searchable.
-                    Never lose important insights or code snippets from previous
-                    sessions.
+                    All conversations are automatically saved and searchable. Never lose
+                    important insights or code snippets from previous sessions.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>

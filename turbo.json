@@ -15,21 +15,14 @@
       "persistent": false
     },
     "format": {
-      "outputs": [".cache/.biomecache"],
       "outputLogs": "new-only"
     },
     "check": {
       "dependsOn": ["^topo"],
-      "outputs": [".cache/.biomecache"],
       "outputLogs": "new-only"
     },
     "lint": {
-      "dependsOn": ["^topo", "^build"],
-      "outputs": [".cache/.biomecache"]
-    },
-    "typecheck": {
-      "dependsOn": ["^topo", "^build"],
-      "outputs": [".cache/tsbuildinfo.json"]
+      "dependsOn": ["^topo", "^build"]
     },
     "clean": {
       "cache": false

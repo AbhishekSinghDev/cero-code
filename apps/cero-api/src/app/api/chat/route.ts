@@ -1,8 +1,8 @@
+import { subscribe } from "@inngest/realtime";
+import { NextResponse } from "next/server";
 import { chatSchema } from "@/lib/zod-schema";
 import { inngest } from "@/server/inngest/client";
 import { getAuthenticatedUser } from "@/server/utils/get-user";
-import { subscribe } from "@inngest/realtime";
-import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   const user = await getAuthenticatedUser(request.headers);
@@ -15,13 +15,10 @@ export async function POST(request: Request) {
   const parseResult = chatSchema.safeParse(body);
 
   if (!parseResult.success || parseResult.error) {
-    return new NextResponse(
-      JSON.stringify({ error: parseResult.error.errors }),
-      {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+    return new NextResponse(JSON.stringify({ error: parseResult.error.errors }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   const conversationId = crypto.randomUUID();
@@ -53,9 +50,6 @@ export async function POST(request: Request) {
     });
   } catch (err) {
     console.error("Chat API error:", err);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

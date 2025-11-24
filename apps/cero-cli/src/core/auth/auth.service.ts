@@ -27,8 +27,7 @@ export class AuthService {
 
     if (response.error || !response.data) {
       throw new Error(
-        response.error?.error_description ??
-          "Failed to request device authorization"
+        response.error?.error_description ?? "Failed to request device authorization"
       );
     }
 
@@ -39,7 +38,7 @@ export class AuthService {
     try {
       await open(url);
       console.log(chalk.green("✓ Browser opened successfully"));
-    } catch (err) {
+    } catch (_err) {
       console.warn(chalk.yellow("! Could not open browser automatically"));
     }
   }
@@ -70,24 +69,18 @@ export class AuthService {
     } else if (error) {
       switch (error.error) {
         case "authorization_pending":
-          await new Promise((resolve) =>
-            setTimeout(resolve, pollingInterval * 1000)
-          );
+          await new Promise((resolve) => setTimeout(resolve, pollingInterval * 1000));
           return this.pollForToken(deviceCode, pollingInterval);
         case "slow_down":
           pollingInterval += 5;
-          await new Promise((resolve) =>
-            setTimeout(resolve, pollingInterval * 1000)
-          );
+          await new Promise((resolve) => setTimeout(resolve, pollingInterval * 1000));
           return this.pollForToken(deviceCode, pollingInterval);
         case "access_denied":
           throw new Error("Access was denied by the user");
         case "expired_token":
           throw new Error("The device code has expired");
         default:
-          throw new Error(
-            `Authorization error: ${error.error_description || error.error}`
-          );
+          throw new Error(`Authorization error: ${error.error_description || error.error}`);
       }
     }
   }
