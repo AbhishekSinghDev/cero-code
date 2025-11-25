@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   const parseResult = chatSchema.safeParse(body);
 
   if (!parseResult.success || parseResult.error) {
-    return new NextResponse(JSON.stringify({ error: parseResult.error.errors }), {
+    return new NextResponse(JSON.stringify({ error: parseResult.error }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });
