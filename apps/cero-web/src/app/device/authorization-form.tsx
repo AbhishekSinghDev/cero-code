@@ -1,5 +1,10 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { IconAlertCircle, IconDeviceMobile, IconLoader2 } from "@tabler/icons-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import Logo from "@/components/shared/logo";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -22,15 +27,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { deviceAuthorizationSchema } from "@/lib/zod-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  IconAlertCircle,
-  IconDeviceMobile,
-  IconLoader2,
-} from "@tabler/icons-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect } from "react";
-import { useForm } from "react-hook-form";
 
 const DeviceAuthorizationForm = () => {
   const router = useRouter();
@@ -59,8 +55,7 @@ const DeviceAuthorizationForm = () => {
         if (response.error) {
           form.setError("root", {
             message:
-              response.error.error_description ||
-              "An error occurred. Please try again.",
+              response.error.error_description || "An error occurred. Please try again.",
           });
         }
       } catch (err) {
@@ -96,9 +91,7 @@ const DeviceAuthorizationForm = () => {
             </div>
           </div>
           <div className="space-y-2">
-            <CardTitle className="text-2xl font-bold">
-              Device Authorization
-            </CardTitle>
+            <CardTitle className="text-2xl font-bold">Device Authorization</CardTitle>
             <CardDescription className="text-base">
               Enter the code displayed on your device to authorize it
             </CardDescription>
@@ -137,9 +130,7 @@ const DeviceAuthorizationForm = () => {
               {form.formState.errors.root && (
                 <Alert variant="destructive">
                   <IconAlertCircle className="h-4 w-4" />
-                  <AlertDescription>
-                    {form.formState.errors.root.message}
-                  </AlertDescription>
+                  <AlertDescription>{form.formState.errors.root.message}</AlertDescription>
                 </Alert>
               )}
 
@@ -147,9 +138,7 @@ const DeviceAuthorizationForm = () => {
                 type="submit"
                 size="lg"
                 className="w-full bg-[#FF6B6B] hover:bg-[#FF6B6B]/90"
-                disabled={
-                  form.formState.isSubmitting || !form.formState.isDirty
-                }
+                disabled={form.formState.isSubmitting || !form.formState.isDirty}
               >
                 {form.formState.isSubmitting ? (
                   <>
@@ -168,9 +157,7 @@ const DeviceAuthorizationForm = () => {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                Secure Authorization
-              </span>
+              <span className="bg-card px-2 text-muted-foreground">Secure Authorization</span>
             </div>
           </div>
 

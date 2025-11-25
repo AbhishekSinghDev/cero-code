@@ -1,12 +1,12 @@
 "use client";
 
+import { IconBrandGithub, IconLoader2 } from "@tabler/icons-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useTransition } from "react";
 import Logo from "@/components/shared/logo";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { authClient } from "@/lib/auth-client";
-import { IconBrandGithub, IconLoader2 } from "@tabler/icons-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useTransition } from "react";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -82,8 +82,7 @@ const LoginForm = () => {
               </>
             ) : (
               <>
-                <IconBrandGithub className="mr-2 h-5 w-5" /> Continue with
-                GitHub
+                <IconBrandGithub className="mr-2 h-5 w-5" /> Continue with GitHub
               </>
             )}
           </Button>

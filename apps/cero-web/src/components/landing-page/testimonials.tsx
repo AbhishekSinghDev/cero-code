@@ -1,9 +1,9 @@
 "use client";
 
+import { IconStar } from "@tabler/icons-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { TESTIMONIALS } from "@/lib/constant";
-import { IconStar } from "@tabler/icons-react";
 
 export function Testimonials() {
   const testimonials = TESTIMONIALS;
@@ -33,10 +33,7 @@ export function Testimonials() {
                   {/* Stars */}
                   <div className="mb-4 flex gap-1">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <IconStar
-                        key={i}
-                        className="h-4 w-4 fill-[#FF6B6B] text-[#FF6B6B]"
-                      />
+                      <IconStar key={i} className="h-4 w-4 fill-[#FF6B6B] text-[#FF6B6B]" />
                     ))}
                   </div>
 
@@ -54,9 +51,7 @@ export function Testimonials() {
                     </Avatar>
                     <div>
                       <div className="font-bold">{testimonial.name}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {testimonial.role}
-                      </div>
+                      <div className="text-sm text-muted-foreground">{testimonial.role}</div>
                       <div className="text-xs text-muted-foreground">
                         {testimonial.company}
                       </div>

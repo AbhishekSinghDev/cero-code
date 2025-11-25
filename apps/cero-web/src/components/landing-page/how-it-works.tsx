@@ -1,8 +1,8 @@
 "use client";
 
+import { IconDownload, IconKey, IconMessageCircle } from "@tabler/icons-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { STEPS } from "@/lib/constant";
-import { IconDownload, IconKey, IconMessageCircle } from "@tabler/icons-react";
 
 export function HowItWorks() {
   const steps = STEPS.map((step) => ({
@@ -57,24 +57,16 @@ export function HowItWorks() {
                           className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg"
                           style={{ backgroundColor: `${step.color}10` }}
                         >
-                          <step.icon
-                            className="h-6 w-6"
-                            style={{ color: step.color }}
-                          />
+                          <step.icon className="h-6 w-6" style={{ color: step.color }} />
                         </div>
                       </div>
 
                       {/* Content */}
                       <div className="flex-1">
-                        <h3 className="mb-2 text-xl font-bold md:text-2xl">
-                          {step.title}
-                        </h3>
-                        <p className="mb-4 text-muted-foreground">
-                          {step.description}
-                        </p>
+                        <h3 className="mb-2 text-xl font-bold md:text-2xl">{step.title}</h3>
+                        <p className="mb-4 text-muted-foreground">{step.description}</p>
                         <div className="rounded-lg border bg-muted/50 px-4 py-3 font-mono text-sm">
-                          <span className="text-[#FF6B6B]">$</span>{" "}
-                          {step.command}
+                          <span className="text-[#FF6B6B]">$</span> {step.command}
                         </div>
                       </div>
                     </div>

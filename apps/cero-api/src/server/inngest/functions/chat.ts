@@ -1,10 +1,8 @@
-import { inngest } from "../client";
-
-import type { Events, RealtimeContext } from "@/types/inngest";
-import { chatChannel } from "../channels";
-
 import { google } from "@ai-sdk/google";
 import { streamText } from "ai";
+import type { Events, RealtimeContext } from "@/types/inngest";
+import { chatChannel } from "../channels";
+import { inngest } from "../client";
 
 export const processChat = inngest.createFunction(
   {
@@ -17,9 +15,7 @@ export const processChat = inngest.createFunction(
     const eventData = event.data as unknown as Events["chat/process"];
 
     if (!eventData?.data) {
-      throw new Error(
-        "Please provide all the required data to process the chat"
-      );
+      throw new Error("Please provide all the required data to process the chat");
     }
 
     try {
@@ -46,15 +42,11 @@ export const processChat = inngest.createFunction(
           fullText += chunk;
 
           // Publish each token to Realtime channel
-          await publish(
-            chatChannel(eventData.data.conversationId).token(chunk)
-          );
+          await publish(chatChannel(eventData.data.conversationId).token(chunk));
         }
 
         // Signal completion
-        await publish(
-          chatChannel(eventData.data.conversationId).done({ fullText })
-        );
+        await publish(chatChannel(eventData.data.conversationId).done({ fullText }));
         return { success: true, text: fullText };
       });
     } catch (err) {

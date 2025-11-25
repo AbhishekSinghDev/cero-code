@@ -4,15 +4,16 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "check": "eslint .",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "dev": "next dev -p 3000 --turbo",
+    "dev": "next dev -p 3000",
     "preview": "next build && next start",
     "start": "next start -p 3000",
-    "typecheck": "tsc --noEmit",
     "clean": "git clean -xdf .cache .next .turbo node_modules"
   },
   "dependencies": {
@@ -72,8 +73,7 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "eslint": "^9",
-    "eslint-config-next": "16.0.3",
+    "@biomejs/biome": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
   }

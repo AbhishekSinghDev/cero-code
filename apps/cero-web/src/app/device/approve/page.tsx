@@ -5,9 +5,7 @@ const ApproveDeviceAuthorizationPage = () => {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center">
-          Loading...
-        </div>
+        <div className="flex min-h-screen items-center justify-center">Loading...</div>
       }
     >
       <ApproveDeviceAuthorization />

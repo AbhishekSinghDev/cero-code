@@ -1,8 +1,8 @@
+import { IconArrowLeft, IconHome, IconSearch } from "@tabler/icons-react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { IconArrowLeft, IconHome, IconSearch } from "@tabler/icons-react";
-import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -14,9 +14,7 @@ export default function NotFound() {
       <div className="mx-auto max-w-2xl text-center">
         {/* 404 Display */}
         <div className="mb-8">
-          <h2 className="text-9xl font-bold text-[#FF6B6B] transition-all">
-            404
-          </h2>
+          <h2 className="text-9xl font-bold text-[#FF6B6B] transition-all">404</h2>
         </div>
 
         {/* Badge */}
@@ -34,8 +32,8 @@ export default function NotFound() {
 
         {/* Description */}
         <p className="mb-8 text-lg text-muted-foreground sm:text-xl">
-          The page you&aposs;re looking for doesn&aposs;t exist or has been
-          moved to another location. Let&aposs; get you back on track.
+          The page you&aposs;re looking for doesn&aposs;t exist or has been moved to another
+          location. Let&aposs; get you back on track.
         </p>
 
         {/* Code-style error card */}
@@ -45,25 +43,19 @@ export default function NotFound() {
               <div className="h-3 w-3 rounded-full bg-red-500" />
               <div className="h-3 w-3 rounded-full bg-yellow-500" />
               <div className="h-3 w-3 rounded-full bg-green-500" />
-              <span className="ml-2 text-xs text-muted-foreground">
-                error.log
-              </span>
+              <span className="ml-2 text-xs text-muted-foreground">error.log</span>
             </div>
           </div>
           <div className="p-6">
             <pre className="text-left">
               <code className="font-mono text-sm leading-relaxed">
-                <span className="text-muted-foreground">
-                  $ cero navigate /this-page
-                </span>
+                <span className="text-muted-foreground">$ cero navigate /this-page</span>
                 {"\n\n"}
                 <span className="text-[#FF6B6B]">Error:</span> Route not found
                 {"\n"}
-                <span className="text-muted-foreground">at</span> Navigator.find
-                (routes.ts:42)
+                <span className="text-muted-foreground">at</span> Navigator.find (routes.ts:42)
                 {"\n"}
-                <span className="text-muted-foreground">at</span> Router.resolve
-                (index.ts:128)
+                <span className="text-muted-foreground">at</span> Router.resolve (index.ts:128)
                 {"\n\n"}
                 <span className="text-[#06B6D4]">
                   💡 Tip: Try checking the URL or return home
@@ -85,12 +77,7 @@ export default function NotFound() {
               Go Home
             </Link>
           </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="text-base sm:text-lg"
-            asChild
-          >
+          <Button size="lg" variant="outline" className="text-base sm:text-lg" asChild>
             <Link href="/#">
               <IconSearch className="mr-2 h-5 w-5" />
               Search Site

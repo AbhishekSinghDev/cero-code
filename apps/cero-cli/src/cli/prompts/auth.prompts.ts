@@ -1,8 +1,9 @@
+import readline from "node:readline";
 import type { AuthService } from "@core/auth/auth.service";
 import boxen from "boxen";
 import chalk from "chalk";
 import ora from "ora";
-import readline from "readline";
+import type { DeviceAuthResponse } from "types";
 
 function askConfirmation(question: string): Promise<boolean> {
   const rl = readline.createInterface({
@@ -31,7 +32,7 @@ export async function loginPrompt(authService: AuthService): Promise<void> {
     return;
   }
 
-  let deviceAuth;
+  let deviceAuth: DeviceAuthResponse;
   const spinner = ora(chalk.dim("Requesting device authorization...")).start();
 
   try {
@@ -39,24 +40,17 @@ export async function loginPrompt(authService: AuthService): Promise<void> {
     spinner.succeed(chalk.green("Authorization code received"));
   } catch (error) {
     spinner.fail(chalk.red("Authorization request failed"));
-    console.error(
-      chalk.red(`Failed to request authorization: ${(error as Error).message}`)
-    );
+    console.error(chalk.red(`Failed to request authorization: ${(error as Error).message}`));
     process.exit(1);
   }
 
-  const url =
-    deviceAuth.verification_uri_complete || deviceAuth.verification_uri;
+  const url = deviceAuth.verification_uri_complete || deviceAuth.verification_uri;
 
   console.log(
     boxen(
       `${chalk.bold("Visit:")} ${chalk.cyan.underline(url)}\n` +
-        `${chalk.bold("Code: ")} ${chalk.yellow.bold(
-          deviceAuth.user_code
-        )}\n\n` +
-        chalk.dim(
-          `Expires in ${Math.floor(deviceAuth.expires_in / 60)} minutes`
-        ),
+        `${chalk.bold("Code: ")} ${chalk.yellow.bold(deviceAuth.user_code)}\n\n` +
+        chalk.dim(`Expires in ${Math.floor(deviceAuth.expires_in / 60)} minutes`),
       {
         padding: 1,
         margin: 1,
@@ -68,17 +62,13 @@ export async function loginPrompt(authService: AuthService): Promise<void> {
     )
   );
 
-  const shouldOpen = await askConfirmation(
-    "Open authorization URL in your browser?"
-  );
+  const shouldOpen = await askConfirmation("Open authorization URL in your browser?");
 
   const pollSpinner = ora(chalk.dim("Waiting for authorization...")).start();
 
   if (shouldOpen) {
     await authService.openAuthorizationUrl(url);
-    pollSpinner.text = chalk.dim(
-      "Browser opened, waiting for authorization..."
-    );
+    pollSpinner.text = chalk.dim("Browser opened, waiting for authorization...");
   }
 
   try {

@@ -10,6 +10,4 @@ export const deviceAuthorizationSchema = z.object({
     }),
 });
 
-export type DeviceAuthorizationFormData = z.infer<
-  typeof deviceAuthorizationSchema
->;
+export type DeviceAuthorizationFormData = z.infer<typeof deviceAuthorizationSchema>;

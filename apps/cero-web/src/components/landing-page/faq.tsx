@@ -42,12 +42,9 @@ export function FAQ() {
 
           {/* Additional Help */}
           <div className="mt-12 rounded-lg border-2 border-dashed border-border p-8 text-center">
-            <h3 className="mb-2 text-xl font-bold text-foreground">
-              Still have questions?
-            </h3>
+            <h3 className="mb-2 text-xl font-bold text-foreground">Still have questions?</h3>
             <p className="mb-4 text-muted-foreground">
-              Can't find the answer you're looking for? Our support team is here
-              to help.
+              Can't find the answer you're looking for? Our support team is here to help.
             </p>
             <Button variant="outline" asChild>
               <a href="mailto:support@cero.dev">Contact Support</a>

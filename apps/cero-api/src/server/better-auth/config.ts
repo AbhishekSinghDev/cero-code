@@ -1,12 +1,9 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { createAuthMiddleware } from "better-auth/api";
-
+import { createAuthMiddleware, getOAuthState } from "better-auth/api";
 import { bearer, deviceAuthorization } from "better-auth/plugins";
-
 import { env } from "@/env";
 import { db } from "@/server/db";
-import { getOAuthState } from "better-auth/api";
 
 export const auth = betterAuth({
   baseURL: env.NEXT_PUBLIC_API_URL,
@@ -35,7 +32,7 @@ export const auth = betterAuth({
     deviceAuthorization({
       expiresIn: "30m",
       interval: "5s",
-      verificationUri: env.NEXT_PUBLIC_WEBSITE_URL + "/device",
+      verificationUri: `${env.NEXT_PUBLIC_WEBSITE_URL}/device`,
     }),
   ],
   hooks: {

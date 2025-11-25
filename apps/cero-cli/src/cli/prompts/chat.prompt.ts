@@ -40,7 +40,7 @@ export async function chatPrompt(
   const now = Date.now();
   let isFirstToken = true;
 
-  const { data: response, error } = await tryCatch(
+  const { data: _response, error } = await tryCatch(
     chatService.run(message, authToken.access_token, (token) => {
       if (isFirstToken) {
         spinner.stopAndPersist({

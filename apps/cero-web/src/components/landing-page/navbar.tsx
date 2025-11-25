@@ -1,5 +1,13 @@
 "use client";
 
+import { IconLogout, IconMenu, IconMoon, IconSun, IconUser } from "@tabler/icons-react";
+import type { Route } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,28 +17,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { authClient } from "@/lib/auth-client";
 import { NAV_LINKS } from "@/lib/constant";
-import {
-  IconLogout,
-  IconMenu,
-  IconMoon,
-  IconSun,
-  IconUser,
-} from "@tabler/icons-react";
-import type { Route } from "next";
-import { useTheme } from "next-themes";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
 import Logo from "../shared/logo";
 
 export function Navbar() {
@@ -117,12 +106,8 @@ export function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel className="flex flex-col space-y-1">
-                  <span className="text-sm font-medium">
-                    {session.user.name || "User"}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {session.user.email}
-                  </span>
+                  <span className="text-sm font-medium">{session.user.name || "User"}</span>
+                  <span className="text-xs text-muted-foreground">{session.user.email}</span>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut}>
@@ -201,12 +186,8 @@ export function Navbar() {
                   {session?.user ? (
                     <>
                       <div className="px-2 py-2 text-sm">
-                        <p className="font-medium">
-                          {session.user.name || "User"}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {session.user.email}
-                        </p>
+                        <p className="font-medium">{session.user.name || "User"}</p>
+                        <p className="text-xs text-muted-foreground">{session.user.email}</p>
                       </div>
                       <Button
                         onClick={handleSignOut}

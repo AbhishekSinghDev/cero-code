@@ -7,21 +7,14 @@ export class KeychainService {
   private readonly accountName = "auth-instance";
 
   async saveTokens(tokens: AuthTokens): Promise<void> {
-    await setPassword(
-      this.serviceName,
-      this.accountName,
-      JSON.stringify(tokens)
-    );
+    await setPassword(this.serviceName, this.accountName, JSON.stringify(tokens));
   }
 
   async getTokens(): Promise<AuthTokens | null> {
     try {
-      const authInstance = await getPassword(
-        this.serviceName,
-        this.accountName
-      );
+      const authInstance = await getPassword(this.serviceName, this.accountName);
       return JSON.parse(authInstance || "null");
-    } catch (error) {
+    } catch (_error) {
       return null;
     }
   }
@@ -29,7 +22,7 @@ export class KeychainService {
   async clearTokens(): Promise<void> {
     try {
       await deletePassword(this.serviceName, this.accountName);
-    } catch (error) {
+    } catch (_error) {
       // Ignore errors if tokens don't exist
     }
   }
@@ -38,7 +31,7 @@ export class KeychainService {
     const tokens = await this.getTokens();
     if (!tokens) return false;
 
-    const now = new Date().getTime();
+    const now = Date.now();
     const expiresAt = now + new Date(tokens.expires_in).getTime() * 1000;
 
     return expiresAt - now > 5 * 60 * 1000;

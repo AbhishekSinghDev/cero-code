@@ -1,0 +1,26 @@
+{
+  "extends": ["../../biome.json"],
+  "files": {
+    "includes": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
+  },
+  "linter": {
+    "rules": {
+      "suspicious": {
+        "noConsole": "off",
+        "noArrayIndexKey": "off",
+        "noDocumentCookie": "off"
+      },
+      "a11y": {
+        "useFocusableInteractive": "off",
+        "useSemanticElements": "off",
+        "noSvgWithoutTitle": "off",
+        "noRedundantRoles": "off",
+        "useAriaPropsForRole": "off",
+        "useKeyWithClickEvents": "off"
+      },
+      "style": {
+        "useTemplate": "off"
+      }
+    }
+  }
+}

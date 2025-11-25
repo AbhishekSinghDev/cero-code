@@ -1,16 +1,17 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { FOOTER_SECTIONS, ME, SOCIAL_LINKS } from "@/lib/constant";
 import {
+  type Icon,
   IconBrandDiscord,
   IconBrandGithub,
   IconBrandTwitter,
 } from "@tabler/icons-react";
 import type { Route } from "next";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { FOOTER_SECTIONS, ME, SOCIAL_LINKS } from "@/lib/constant";
 import Logo from "../shared/logo";
 
 export function Footer() {
@@ -18,7 +19,7 @@ export function Footer() {
 
   // Map social links with tabler icons
   const socialLinksWithIcons = SOCIAL_LINKS.map((link) => {
-    let icon;
+    let icon: Icon | undefined;
     if (link.name === "GitHub") icon = IconBrandGithub;
     else if (link.name === "Twitter") icon = IconBrandTwitter;
     else if (link.name === "Discord") icon = IconBrandDiscord;
@@ -35,8 +36,8 @@ export function Footer() {
               <Logo />
             </Link>
             <p className="mb-6 max-w-xs text-sm text-muted-foreground">
-              AI-powered CLI tool for developers. Chat with LLMs, search the
-              web, and execute code—all from your terminal.
+              AI-powered CLI tool for developers. Chat with LLMs, search the web, and execute
+              code—all from your terminal.
             </p>
 
             {/* Newsletter */}
@@ -46,15 +47,8 @@ export function Footer() {
                 Get the latest updates and tips delivered to your inbox.
               </p>
               <div className="flex gap-2">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="h-9 text-sm"
-                />
-                <Button
-                  size="sm"
-                  className="bg-[#FF6B6B] hover:bg-[#FF6B6B]/90"
-                >
+                <Input type="email" placeholder="Enter your email" className="h-9 text-sm" />
+                <Button size="sm" className="bg-[#FF6B6B] hover:bg-[#FF6B6B]/90">
                   Subscribe
                 </Button>
               </div>
@@ -86,8 +80,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} cerocode. All rights reserved. • Built
-            by{" "}
+            © {new Date().getFullYear()} cerocode. All rights reserved. • Built by{" "}
             <Link
               href={ME.portfolioUrl as Route}
               target="_blank"

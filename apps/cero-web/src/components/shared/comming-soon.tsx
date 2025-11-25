@@ -1,11 +1,11 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { IconArrowLeft, IconBell, IconRocket } from "@tabler/icons-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 export default function CommingSoon() {
   const [dots, setDots] = useState("");
@@ -47,8 +47,8 @@ export default function CommingSoon() {
 
         {/* Description */}
         <p className="mb-8 text-lg text-muted-foreground sm:text-xl">
-          We&apos;re working hard to bring you something amazing. This page is
-          currently under development and will be available soon.
+          We&apos;re working hard to bring you something amazing. This page is currently under
+          development and will be available soon.
         </p>
 
         {/* Code-style card */}
@@ -72,9 +72,7 @@ export default function CommingSoon() {
                 {"\n"}
                 <span className="text-[#06B6D4]">ETA:</span> Soon™
                 {"\n\n"}
-                <span className="text-[#FF6B6B]">
-                  ⚡ Stay tuned for updates!
-                </span>
+                <span className="text-[#FF6B6B]">⚡ Stay tuned for updates!</span>
               </code>
             </pre>
           </div>
@@ -92,12 +90,7 @@ export default function CommingSoon() {
               Back to Home
             </Link>
           </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="text-base sm:text-lg"
-            asChild
-          >
+          <Button size="lg" variant="outline" className="text-base sm:text-lg" asChild>
             <a href="#notify">
               <IconBell className="mr-2 h-5 w-5" />
               Notify Me
