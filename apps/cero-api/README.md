@@ -52,7 +52,7 @@ This is the backend API that powers the Cero ecosystem. It handles authenticatio
 ### Prerequisites
 
 - Node.js 18+
-- pnpm
+- bun
 - A Neon Database instance (or any Postgres database)
 - Google AI API key
 - GitHub OAuth app credentials
@@ -65,7 +65,7 @@ This is the backend API that powers the Cero ecosystem. It handles authenticatio
 cd apps/cero-api
 
 # Install dependencies
-pnpm install
+bun install
 
 # Set up your environment variables
 cp .env.example .env
@@ -85,20 +85,20 @@ Check `.env.example` for all required variables. You'll need:
 
 ```bash
 # Generate migration files
-pnpm db:generate
+bun db:generate
 
 # Push schema to database
-pnpm db:push
+bun db:push
 
 # (Optional) Open Drizzle Studio to view your data
-pnpm db:studio
+bun db:studio
 ```
 
 ### Development
 
 ```bash
 # Run the dev server
-pnpm dev
+bun dev
 
 # The API will be available at http://localhost:3001
 ```
@@ -107,10 +107,10 @@ pnpm dev
 
 ```bash
 # Build for production
-pnpm build
+bun build
 
 # Start the production server
-pnpm start
+bun start
 ```
 
 ## API Endpoints

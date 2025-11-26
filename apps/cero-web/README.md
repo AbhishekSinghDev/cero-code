@@ -38,20 +38,20 @@ Because nobody wants to paste API keys into their terminal. This web app handles
 
 ## Getting Started
 
-First, make sure you have Node.js (v18+) and pnpm installed.
+First, make sure you have Node.js (v18+) and bun installed.
 
 ```bash
 # Navigate to the web app
 cd apps/web
 
 # Install dependencies
-pnpm install
+bun install
 
 # Set up your environment variables
 cp .env.example .env
 
 # Run the dev server
-pnpm dev
+bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) and you're good to go.

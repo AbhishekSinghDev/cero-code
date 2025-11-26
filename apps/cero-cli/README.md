@@ -23,10 +23,10 @@ Cero is a CLI tool that brings AI chat capabilities directly to your terminal. N
 npm install -g cerocode
 ```
 
-Or if you're using pnpm:
+Or if you're using bun:
 
 ```bash
-pnpm add -g cerocode
+bun add -g cerocode
 ```
 
 ## Quick Start
@@ -150,16 +150,16 @@ git clone https://github.com/AbhishekSinghDev/cerocode.git
 cd cerocode
 
 # Install dependencies
-pnpm install
+bun install
 
 # Run in development mode
-pnpm dev
+bun dev
 
 # To run commands in dev mode
-pnpm dev <command>
+bun dev <command>
 
 # Build for production
-pnpm build
+bun build
 ```
 
 ## Architecture

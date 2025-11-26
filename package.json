@@ -1,5 +1,6 @@
 {
   "name": "cerocode-monorepo",
+  "private": true,
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -10,25 +11,19 @@
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean"
   },
-  "packageManager": "pnpm@10.23.0",
+  "workspaces": {
+    "packages": ["apps/*"],
+    "catalog": {
+      "@types/react": "19.2.6",
+      "@types/react-dom": "19.2.3"
+    }
+  },
+  "packageManager": "bun@1.2.15",
   "engines": {
     "node": ">=22"
   },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "19.2.6",
-      "@types/react-dom": "19.2.3"
-    },
-    "onlyBuiltDependencies": [
-      "@biomejs/biome",
-      "esbuild",
-      "protobufjs",
-      "sharp",
-      "unrs-resolver"
-    ]
-  },
   "devDependencies": {
-    "@biomejs/biome": "catalog:",
+    "@biomejs/biome": "^2.3.7",
     "turbo": "^2.6.1"
   }
 }

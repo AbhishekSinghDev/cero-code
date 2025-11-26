@@ -131,10 +131,10 @@ Want to follow along or contribute? Check out our [GitHub repository](https://gi
 npm install -g cerocode
 ```
 
-Or with pnpm:
+Or with bun:
 
 ```bash
-pnpm add -g cerocode
+bun add -g cerocode
 ```
 
 ### First Time Setup
@@ -228,7 +228,7 @@ The backend powering everything. Built with Next.js 16 as a full-stack API serve
 ### Prerequisites
 
 - Node.js 18 or higher
-- pnpm (we use workspaces)
+- bun (we use workspaces)
 - A Neon Database instance
 - Google AI API key
 - GitHub OAuth app credentials
@@ -242,7 +242,7 @@ git clone https://github.com/AbhishekSinghDev/cerocode.git
 cd cerocode
 
 # Install dependencies for all apps
-pnpm install
+bun install
 
 # Set up environment variables for each app
 cp apps/cero-api/.env.example apps/cero-api/.env
@@ -250,35 +250,35 @@ cp apps/cero-web/.env.example apps/cero-web/.env
 
 # Set up the database
 cd apps/cero-api
-pnpm db:push
+bun db:push
 ```
 
 ### Running Locally
 
 ```bash
 # Run all apps in development mode
-pnpm dev
+bun dev
 
 # Note: I would recommend running your project individually
 
-cd apps/cero-cli && pnpm dev <command>
-cd apps/cero-web && pnpm dev
-cd apps/cero-api && pnpm dev
+cd apps/cero-cli && bun dev <command>
+cd apps/cero-web && bun dev
+cd apps/cero-api && bun dev
 
 # Dont forget to run inngest development server
-pnpm dev:inngest
+bun dev:inngest
 ```
 
 ### Building
 
 ```bash
 # Build all apps
-pnpm build
+bun build
 
 # Build individual apps
-cd apps/cero-cli && pnpm build
-cd apps/cero-web && pnpm build
-cd apps/cero-api && pnpm build
+cd apps/cero-cli && bun build
+cd apps/cero-web && bun build
+cd apps/cero-api && bun build
 ```
 
 ## Project Structure
@@ -308,7 +308,7 @@ cero/
 │       └── package.json
 │
 ├── package.json           # Workspace root
-├── pnpm-workspace.yaml    # pnpm workspace config
+├── bun-workspace.yaml    # bun workspace config
 ├── turbo.json            # Turborepo config
 └── README.md             # This file
 ```
@@ -350,7 +350,7 @@ We welcome contributions! Here's how you can help:
 2. Create a feature branch (`git checkout -b feature/cool-thing`)
 3. Make your changes
 4. Write or update tests if applicable
-5. Ensure all apps build successfully (`pnpm build`)
+5. Ensure all apps build successfully (`bun build`)
 6. Commit your changes (`git commit -am 'Add cool thing'`)
 7. Push to your branch (`git push origin feature/cool-thing`)
 8. Open a Pull Request
