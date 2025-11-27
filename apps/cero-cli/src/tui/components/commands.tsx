@@ -1,8 +1,8 @@
 // Keyboard shortcuts/commands reference
 export interface Command {
-  key: string
-  description: string
-  context?: "global" | "sidebar" | "chat"
+  key: string;
+  description: string;
+  context?: "global" | "sidebar" | "chat";
 }
 
 export const COMMANDS: Command[] = [
@@ -14,11 +14,11 @@ export const COMMANDS: Command[] = [
   { key: "m", description: "Change model", context: "chat" },
   { key: "1-5", description: "Quick select model", context: "chat" },
   { key: "Esc", description: "Exit / Close", context: "global" },
-]
+];
 
 interface CommandsDisplayProps {
-  showFull?: boolean
-  compact?: boolean
+  showFull?: boolean;
+  compact?: boolean;
 }
 
 export function CommandsDisplay({ showFull = false, compact = false }: CommandsDisplayProps) {
@@ -39,7 +39,7 @@ export function CommandsDisplay({ showFull = false, compact = false }: CommandsD
           <text fg="#444444"> select</text>
         </box>
       </box>
-    )
+    );
   }
 
   if (showFull) {
@@ -85,41 +85,41 @@ export function CommandsDisplay({ showFull = false, compact = false }: CommandsD
           {/* Global */}
           <text fg="#444444">── Global ──</text>
           <text>
-            <span fg="#00ff88">n       </span>
+            <span fg="#00ff88">n </span>
             <span fg="#888888">New chat</span>
           </text>
           <text>
-            <span fg="#00ff88">Tab     </span>
+            <span fg="#00ff88">Tab </span>
             <span fg="#888888">Switch focus</span>
           </text>
           <text>
-            <span fg="#00ff88">Esc     </span>
+            <span fg="#00ff88">Esc </span>
             <span fg="#888888">Exit / Close</span>
           </text>
 
           {/* Sidebar */}
           <text fg="#444444">── Sidebar ──</text>
           <text>
-            <span fg="#00ff88">b       </span>
+            <span fg="#00ff88">b </span>
             <span fg="#888888">Toggle sidebar</span>
           </text>
           <text>
-            <span fg="#00ff88">↑↓ j/k  </span>
+            <span fg="#00ff88">↑↓ j/k </span>
             <span fg="#888888">Navigate history</span>
           </text>
           <text>
-            <span fg="#00ff88">Enter   </span>
+            <span fg="#00ff88">Enter </span>
             <span fg="#888888">Select chat</span>
           </text>
 
           {/* Chat */}
           <text fg="#444444">── Chat ──</text>
           <text>
-            <span fg="#00ff88">m       </span>
+            <span fg="#00ff88">m </span>
             <span fg="#888888">Change AI model</span>
           </text>
           <text>
-            <span fg="#00ff88">1-5     </span>
+            <span fg="#00ff88">1-5 </span>
             <span fg="#888888">Quick model select</span>
           </text>
         </box>
@@ -130,8 +130,8 @@ export function CommandsDisplay({ showFull = false, compact = false }: CommandsD
           <text fg="#444444">] to start a new chat</text>
         </box>
       </box>
-    )
+    );
   }
 
-  return null
+  return null;
 }

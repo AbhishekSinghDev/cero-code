@@ -1,18 +1,18 @@
-import { useUser } from "../hooks/use-user"
+import { useUser } from "../hooks/use-user";
 
 interface UserInfoProps {
-  collapsed?: boolean
+  collapsed?: boolean;
 }
 
 export function UserInfo({ collapsed }: UserInfoProps) {
-  const { user, isLoading, error, isAuthenticated } = useUser()
+  const { user, isLoading, error, isAuthenticated } = useUser();
 
   if (collapsed) {
     return (
       <box style={{ paddingLeft: 1, paddingRight: 1 }}>
         <text fg={isAuthenticated ? "#00ff88" : "#ff4444"}>●</text>
       </box>
-    )
+    );
   }
 
   if (isLoading) {
@@ -29,7 +29,7 @@ export function UserInfo({ collapsed }: UserInfoProps) {
           <text fg="#666666">Loading...</text>
         </box>
       </box>
-    )
+    );
   }
 
   if (error) {
@@ -47,7 +47,7 @@ export function UserInfo({ collapsed }: UserInfoProps) {
         </box>
         <text fg="#555555">{error.length > 20 ? `${error.slice(0, 20)}...` : error}</text>
       </box>
-    )
+    );
   }
 
   if (!isAuthenticated || !user) {
@@ -65,7 +65,7 @@ export function UserInfo({ collapsed }: UserInfoProps) {
         </box>
         <text fg="#555555">Run 'cero login'</text>
       </box>
-    )
+    );
   }
 
   return (
@@ -84,5 +84,5 @@ export function UserInfo({ collapsed }: UserInfoProps) {
       </box>
       <text fg="#555555">{user.email}</text>
     </box>
-  )
+  );
 }

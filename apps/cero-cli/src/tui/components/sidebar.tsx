@@ -1,19 +1,19 @@
-import type { ChatSession } from "../../types/tui.type"
-import { ChatList } from "./chat-list"
-import { CommandsDisplay } from "./commands"
-import { Logo } from "./logo"
-import { UserInfo } from "./user-info"
+import type { ChatSession } from "../../types/tui.type";
+import { ChatList } from "./chat-list";
+import { CommandsDisplay } from "./commands";
+import { Logo } from "./logo";
+import { UserInfo } from "./user-info";
 
 interface SidebarProps {
-  chats: ChatSession[]
-  selectedChat: string
-  focusedChatIndex: number
-  onSelectChat: (id: string) => void
-  width: number
-  height: number
-  collapsed: boolean
-  onToggleCollapse: () => void
-  showCommands?: boolean
+  chats: ChatSession[];
+  selectedChat: string;
+  focusedChatIndex: number;
+  onSelectChat: (id: string) => void;
+  width: number;
+  height: number;
+  collapsed: boolean;
+  onToggleCollapse: () => void;
+  showCommands?: boolean;
 }
 
 export function Sidebar({
@@ -26,7 +26,7 @@ export function Sidebar({
   collapsed,
   showCommands,
 }: SidebarProps) {
-  const collapsedWidth = 4
+  const collapsedWidth = 4;
 
   if (collapsed) {
     return (
@@ -45,12 +45,18 @@ export function Sidebar({
           <text fg="#00ff88">◆</text>
         </box>
         <box style={{ height: 1, backgroundColor: "#1a1a1a" }} />
-        <ChatList chats={chats} selectedId={selectedChat} focusedIndex={focusedChatIndex} onSelect={onSelectChat} collapsed />
+        <ChatList
+          chats={chats}
+          selectedId={selectedChat}
+          focusedIndex={focusedChatIndex}
+          onSelect={onSelectChat}
+          collapsed
+        />
         <box style={{ flexGrow: 1 }} />
         <box style={{ height: 1, backgroundColor: "#1a1a1a" }} />
         <UserInfo collapsed />
       </box>
-    )
+    );
   }
 
   return (
@@ -92,7 +98,12 @@ export function Sidebar({
       </box>
 
       {/* Chat List */}
-      <ChatList chats={chats} selectedId={selectedChat} focusedIndex={focusedChatIndex} onSelect={onSelectChat} />
+      <ChatList
+        chats={chats}
+        selectedId={selectedChat}
+        focusedIndex={focusedChatIndex}
+        onSelect={onSelectChat}
+      />
 
       {/* Commands or User Info */}
       <box style={{ height: 1, backgroundColor: "#1a1a1a" }} />
@@ -111,5 +122,5 @@ export function Sidebar({
       <box style={{ height: 1, backgroundColor: "#1a1a1a" }} />
       <UserInfo />
     </box>
-  )
+  );
 }

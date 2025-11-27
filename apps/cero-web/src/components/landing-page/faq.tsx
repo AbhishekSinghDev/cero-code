@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Accordion,
   AccordionContent,
@@ -6,7 +7,6 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { FAQ_DATA, ME } from "@/lib/constant";
-import Link from "next/link";
 
 export function FAQ() {
   return (

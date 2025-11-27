@@ -1,14 +1,14 @@
-import type { Message } from "../../types/tui.type"
-import { CommandsDisplay } from "./commands"
+import type { Message } from "../../types/tui.type";
+import { CommandsDisplay } from "./commands";
 
 interface MessageBubbleProps {
-  message: Message
-  isStreaming?: boolean
+  message: Message;
+  isStreaming?: boolean;
 }
 
 function MessageBubble({ message, isStreaming }: MessageBubbleProps) {
-  const isUser = message.role === "user"
-  const isEmpty = !message.content || message.content.length === 0
+  const isUser = message.role === "user";
+  const isEmpty = !message.content || message.content.length === 0;
 
   return (
     <box
@@ -31,15 +31,13 @@ function MessageBubble({ message, isStreaming }: MessageBubbleProps) {
             <strong>{isUser ? "You" : "◆ Cero"}</strong>
           </text>
           <text fg="#444444"> · {message.timestamp}</text>
-          {isStreaming && (
-            <text fg="#4488ff"> ● streaming</text>
-          )}
+          {isStreaming && <text fg="#4488ff"> ● streaming</text>}
         </box>
         {/* Content */}
-        {!isEmpty && (<text fg="#e0e0e0">{message.content}</text>)}
+        {!isEmpty && <text fg="#e0e0e0">{message.content}</text>}
       </box>
     </box>
-  )
+  );
 }
 
 function LoadingIndicator() {
@@ -67,7 +65,7 @@ function LoadingIndicator() {
         <text fg="#666666">Processing your request...</text>
       </box>
     </box>
-  )
+  );
 }
 
 function AuthWarning() {
@@ -90,16 +88,16 @@ function AuthWarning() {
         <text fg="#888888">Run 'cero login' in your terminal to authenticate</text>
       </box>
     </box>
-  )
+  );
 }
 
 interface MessageListProps {
-  messages: Message[]
-  chatTitle: string
-  isNewChat?: boolean
-  isLoading?: boolean
-  isStreaming?: boolean
-  isAuthenticated?: boolean
+  messages: Message[];
+  chatTitle: string;
+  isNewChat?: boolean;
+  isLoading?: boolean;
+  isStreaming?: boolean;
+  isAuthenticated?: boolean;
 }
 
 export function MessageList({
@@ -110,7 +108,7 @@ export function MessageList({
   isStreaming,
   isAuthenticated,
 }: MessageListProps) {
-  const showCommands = isNewChat && messages.length === 0
+  const showCommands = isNewChat && messages.length === 0;
 
   return (
     <box style={{ flexDirection: "column", flexGrow: 1 }}>
@@ -131,12 +129,8 @@ export function MessageList({
           {" "}
           <strong>{chatTitle}</strong>
         </text>
-        {isAuthenticated === false && (
-          <text fg="#ff6666"> [Not Authenticated]</text>
-        )}
-        {isAuthenticated === true && (
-          <text fg="#00ff88"> [Connected]</text>
-        )}
+        {isAuthenticated === false && <text fg="#ff6666"> [Not Authenticated]</text>}
+        {isAuthenticated === true && <text fg="#00ff88"> [Connected]</text>}
       </box>
 
       {/* Divider */}
@@ -170,20 +164,14 @@ export function MessageList({
           {messages.map((msg, idx) => {
             // Check if this is the last assistant message (potentially streaming)
             const isLastAssistant =
-              msg.role === "assistant" && idx === messages.length - 1 && isStreaming === true
+              msg.role === "assistant" && idx === messages.length - 1 && isStreaming === true;
 
-            return (
-              <MessageBubble
-                key={msg.id}
-                message={msg}
-                isStreaming={isLastAssistant}
-              />
-            )
+            return <MessageBubble key={msg.id} message={msg} isStreaming={isLastAssistant} />;
           })}
           {/* Show loading indicator when waiting for first token */}
           {isLoading && <LoadingIndicator />}
         </scrollbox>
       )}
     </box>
-  )
+  );
 }

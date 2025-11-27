@@ -1,25 +1,25 @@
-import type { AIModel, Message } from "../../types/tui.type"
-import { ChatInput } from "./chat-input"
-import { MessageList } from "./message-list"
+import type { AIModel, Message } from "../../types/tui.type";
+import { ChatInput } from "./chat-input";
+import { MessageList } from "./message-list";
 
 interface ChatAreaProps {
-  messages: Message[]
-  chatTitle: string
-  models: AIModel[]
-  selectedModel: string
-  onModelSelect: (modelId: string) => void
-  modelSelectorOpen: boolean
-  onToggleModelSelector: () => void
-  onInputChange: (value: string) => void
-  onSubmit: (value: string) => void
-  inputFocused: boolean
-  width: number
-  height: number
-  isNewChat?: boolean
-  isLoading?: boolean
-  isStreaming?: boolean
-  isAuthenticated?: boolean
-  error?: string | null
+  messages: Message[];
+  chatTitle: string;
+  models: AIModel[];
+  selectedModel: string;
+  onModelSelect: (modelId: string) => void;
+  modelSelectorOpen: boolean;
+  onToggleModelSelector: () => void;
+  onInputChange: (value: string) => void;
+  onSubmit: (value: string) => void;
+  inputFocused: boolean;
+  width: number;
+  height: number;
+  isNewChat?: boolean;
+  isLoading?: boolean;
+  isStreaming?: boolean;
+  isAuthenticated?: boolean;
+  error?: string | null;
 }
 
 export function ChatArea({
@@ -86,5 +86,5 @@ export function ChatArea({
         disabled={isLoading === true || isStreaming === true}
       />
     </box>
-  )
+  );
 }

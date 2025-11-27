@@ -1,11 +1,11 @@
-import type { ChatSession } from "../../types/tui.type"
+import type { ChatSession } from "../../types/tui.type";
 
 interface ChatListProps {
-  chats: ChatSession[]
-  selectedId: string
-  focusedIndex: number
-  onSelect: (id: string) => void
-  collapsed?: boolean
+  chats: ChatSession[];
+  selectedId: string;
+  focusedIndex: number;
+  onSelect: (id: string) => void;
+  collapsed?: boolean;
 }
 
 export function ChatList({ chats, selectedId, focusedIndex, collapsed }: ChatListProps) {
@@ -18,14 +18,21 @@ export function ChatList({ chats, selectedId, focusedIndex, collapsed }: ChatLis
             style={{
               paddingLeft: 1,
               paddingRight: 1,
-              backgroundColor: selectedId === chat.id ? "#1a3a2a" : idx === focusedIndex ? "#1a1a2a" : "transparent",
+              backgroundColor:
+                selectedId === chat.id
+                  ? "#1a3a2a"
+                  : idx === focusedIndex
+                    ? "#1a1a2a"
+                    : "transparent",
             }}
           >
-            <text fg={selectedId === chat.id ? "#00ff88" : "#888888"}>{chat.title.charAt(0)}</text>
+            <text fg={selectedId === chat.id ? "#00ff88" : "#888888"}>
+              {chat.title.charAt(0)}
+            </text>
           </box>
         ))}
       </box>
-    )
+    );
   }
 
   return (
@@ -46,8 +53,8 @@ export function ChatList({ chats, selectedId, focusedIndex, collapsed }: ChatLis
       }}
     >
       {chats.map((chat, idx) => {
-        const isSelected = selectedId === chat.id
-        const isFocused = idx === focusedIndex
+        const isSelected = selectedId === chat.id;
+        const isFocused = idx === focusedIndex;
 
         return (
           <box
@@ -72,11 +79,16 @@ export function ChatList({ chats, selectedId, focusedIndex, collapsed }: ChatLis
                 <text fg={isSelected ? "#00ff88" : "#ffffff"}>{chat.title}</text>
                 <text fg="#444444"> {chat.timestamp}</text>
               </box>
-              <text fg="#555555">{"  "}{chat.lastMessage.length > 25 ? chat.lastMessage.slice(0, 25) + "…" : chat.lastMessage}</text>
+              <text fg="#555555">
+                {"  "}
+                {chat.lastMessage.length > 25
+                  ? `${chat.lastMessage.slice(0, 25)}…`
+                  : chat.lastMessage}
+              </text>
             </box>
           </box>
-        )
+        );
       })}
     </scrollbox>
-  )
+  );
 }

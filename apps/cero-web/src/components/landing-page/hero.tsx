@@ -1,7 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { HERO, INSTALL_COMMAND } from "@/lib/constant";
 import {
   IconArrowRight,
   IconBrandGithub,
@@ -11,6 +9,8 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { HERO, INSTALL_COMMAND } from "@/lib/constant";
 
 // Device Flow Animation States
 type FlowState = "idle" | "typing" | "browser" | "connecting" | "success";

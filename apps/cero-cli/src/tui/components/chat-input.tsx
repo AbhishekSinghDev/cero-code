@@ -1,11 +1,11 @@
-import type { AIModel } from "../../types/tui.type"
+import type { AIModel } from "../../types/tui.type";
 
 interface ModelSelectorProps {
-  models: AIModel[]
-  selectedModel: string
-  onSelect: (modelId: string) => void
-  expanded: boolean
-  onToggle: () => void
+  models: AIModel[];
+  selectedModel: string;
+  onSelect: (modelId: string) => void;
+  expanded: boolean;
+  onToggle: () => void;
 }
 
 export function ModelSelector({ models, selectedModel }: ModelSelectorProps) {
@@ -25,7 +25,7 @@ export function ModelSelector({ models, selectedModel }: ModelSelectorProps) {
         <text fg="#666666">Select Model (1-5):</text>
       </box>
       {models.map((model, idx) => {
-        const isSelected = model.id === selectedModel
+        const isSelected = model.id === selectedModel;
         return (
           <box key={model.id} style={{ paddingLeft: 1, flexDirection: "row" }}>
             <text fg="#444444">{idx + 1}. </text>
@@ -33,22 +33,22 @@ export function ModelSelector({ models, selectedModel }: ModelSelectorProps) {
             <text fg={isSelected ? "#00ff88" : "#ffffff"}>{model.name}</text>
             <text fg="#444444"> [{model.provider}]</text>
           </box>
-        )
+        );
       })}
     </box>
-  )
+  );
 }
 
 interface ChatInputProps {
-  models: AIModel[]
-  selectedModel: string
-  onModelSelect: (modelId: string) => void
-  modelSelectorOpen: boolean
-  onToggleModelSelector: () => void
-  onInputChange: (value: string) => void
-  onSubmit: (value: string) => void
-  focused: boolean
-  disabled?: boolean
+  models: AIModel[];
+  selectedModel: string;
+  onModelSelect: (modelId: string) => void;
+  modelSelectorOpen: boolean;
+  onToggleModelSelector: () => void;
+  onInputChange: (value: string) => void;
+  onSubmit: (value: string) => void;
+  focused: boolean;
+  disabled?: boolean;
 }
 
 export function ChatInput({
@@ -60,13 +60,13 @@ export function ChatInput({
   focused,
   disabled = false,
 }: ChatInputProps) {
-  const current = models.find((m) => m.id === selectedModel) ?? models[0]
+  const current = models.find((m) => m.id === selectedModel) ?? models[0];
 
   const handleSubmit = (value: string) => {
     if (!disabled) {
-      onSubmit(value)
+      onSubmit(value);
     }
-  }
+  };
 
   return (
     <box
@@ -114,12 +114,14 @@ export function ChatInput({
         }}
       >
         <input
-          placeholder={disabled ? "Waiting for response..." : "Type a message… (Enter to send)"}
+          placeholder={
+            disabled ? "Waiting for response..." : "Type a message… (Enter to send)"
+          }
           focused={focused && !disabled}
           onInput={onInputChange}
           onSubmit={handleSubmit}
         />
       </box>
     </box>
-  )
+  );
 }
