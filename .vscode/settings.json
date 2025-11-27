@@ -18,10 +18,10 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.biome": "always",
-    "source.organizeImports": "always",
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit",
     "source.removeUnusedImports": "always",
-    "source.sortImports": "always"
+    "source.sortImports": "explicit"
   },
   "editor.defaultFormatter": "biomejs.biome",
   "editor.formatOnSave": true,

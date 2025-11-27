@@ -1,16 +1,17 @@
-import { useUser } from "../hooks/use-user";
+import { useAuth } from "@tui/hooks/use-auth";
+import { colors, theme } from "../theme";
 
 interface UserInfoProps {
   collapsed?: boolean;
 }
 
 export function UserInfo({ collapsed }: UserInfoProps) {
-  const { user, isLoading, error, isAuthenticated } = useUser();
+  const { user, isLoading, isAuthenticated, error } = useAuth();
 
   if (collapsed) {
     return (
       <box style={{ paddingLeft: 1, paddingRight: 1 }}>
-        <text fg={isAuthenticated ? "#00ff88" : "#ff4444"}>●</text>
+        <text fg={isAuthenticated ? colors.success : colors.error}>●</text>
       </box>
     );
   }
@@ -25,8 +26,8 @@ export function UserInfo({ collapsed }: UserInfoProps) {
         }}
       >
         <box style={{ flexDirection: "row", alignItems: "center" }}>
-          <text fg="#ffaa00">◌ </text>
-          <text fg="#666666">Loading...</text>
+          <text fg={theme.userInfo.indicator.loading}>◌ </text>
+          <text fg={theme.userInfo.loading}>Loading...</text>
         </box>
       </box>
     );
@@ -42,10 +43,12 @@ export function UserInfo({ collapsed }: UserInfoProps) {
         }}
       >
         <box style={{ flexDirection: "row", alignItems: "center" }}>
-          <text fg="#ff4444">● </text>
-          <text fg="#ff4444">Error</text>
+          <text fg={theme.userInfo.error}>● </text>
+          <text fg={theme.userInfo.error}>Error</text>
         </box>
-        <text fg="#555555">{error.length > 20 ? `${error.slice(0, 20)}...` : error}</text>
+        <text fg={theme.userInfo.hint}>
+          {error.length > 20 ? `${error.slice(0, 20)}...` : error}
+        </text>
       </box>
     );
   }
@@ -60,10 +63,10 @@ export function UserInfo({ collapsed }: UserInfoProps) {
         }}
       >
         <box style={{ flexDirection: "row", alignItems: "center" }}>
-          <text fg="#ff4444">● </text>
-          <text fg="#888888">Not logged in</text>
+          <text fg={theme.userInfo.indicator.unauthenticated}>● </text>
+          <text fg={theme.userInfo.loading}>Not logged in</text>
         </box>
-        <text fg="#555555">Run 'cero login'</text>
+        <text fg={theme.userInfo.hint}>Run 'cero login'</text>
       </box>
     );
   }
@@ -77,12 +80,12 @@ export function UserInfo({ collapsed }: UserInfoProps) {
       }}
     >
       <box style={{ flexDirection: "row", alignItems: "center" }}>
-        <text fg="#00ff88">● </text>
-        <text fg="#ffffff">
+        <text fg={theme.userInfo.indicator.authenticated}>● </text>
+        <text fg={theme.userInfo.name}>
           <strong>{user.name}</strong>
         </text>
       </box>
-      <text fg="#555555">{user.email}</text>
+      <text fg={theme.userInfo.email}>{user.email}</text>
     </box>
   );
 }

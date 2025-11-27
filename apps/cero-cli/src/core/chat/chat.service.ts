@@ -1,14 +1,21 @@
 import { ConfigService } from "@core/config/config.service";
 import { tryCatch } from "@utils/error-handler.util";
 
+export interface ChatResponse {
+  fullMessage: string;
+  conversationId: string;
+}
+
 export class ChatService {
   private configService = ConfigService.getInstance();
 
   async run(
     message: string,
     authToken: string,
-    onToken?: (token: string) => void
-  ): Promise<string> {
+    conversationId?: string,
+    onToken?: (token: string) => void,
+    onInit?: (conversationId: string) => void
+  ): Promise<ChatResponse> {
     const apiUrl = this.configService.apiUrl;
 
     const { data: response, error } = await tryCatch(
@@ -18,7 +25,7 @@ export class ChatService {
           "Content-Type": "application/json",
           Authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ message, conversationId }),
       })
     );
 
@@ -34,6 +41,7 @@ export class ChatService {
     const decoder = new TextDecoder();
     let buffer = "";
     let fullMessage = "";
+    let finalConversationId = conversationId || "";
 
     while (true) {
       const { value, done } = await reader.read();
@@ -62,13 +70,18 @@ export class ChatService {
         try {
           const data = JSON.parse(trimmedLine);
 
-          if (data.topic === "token" && data.data) {
+          if (data.topic === "init" && data.data?.conversationId) {
+            finalConversationId = data.data.conversationId;
+            if (onInit) {
+              onInit(finalConversationId);
+            }
+          } else if (data.topic === "token" && data.data) {
             if (onToken) {
               onToken(data.data);
             }
             fullMessage += data.data;
           } else if (data.topic === "done") {
-            return fullMessage;
+            return { fullMessage, conversationId: finalConversationId };
           } else if (data.topic === "error") {
             throw new Error(data.data?.error || "Unknown error");
           }
@@ -79,6 +92,57 @@ export class ChatService {
       }
     }
 
-    return fullMessage || "Chat response completed.";
+    return {
+      fullMessage: fullMessage || "Chat response completed.",
+      conversationId: finalConversationId,
+    };
+  }
+
+  async getConversations(authToken: string) {
+    const apiUrl = this.configService.apiUrl;
+
+    const { data: response, error } = await tryCatch(
+      fetch(`${apiUrl}/api/conversations`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+    );
+
+    if (error || !response) {
+      throw new Error(error?.message || "Failed to fetch conversations");
+    }
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch conversations: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  async getMessages(authToken: string, conversationId: string) {
+    const apiUrl = this.configService.apiUrl;
+
+    const { data: response, error } = await tryCatch(
+      fetch(`${apiUrl}/api/conversations/${conversationId}/messages`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+    );
+
+    if (error || !response) {
+      throw new Error(error?.message || "Failed to fetch messages");
+    }
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch messages: ${response.status}`);
+    }
+
+    return response.json();
   }
 }

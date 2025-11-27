@@ -7,7 +7,11 @@ export class KeychainService {
   private readonly accountName = "auth-instance";
 
   async saveTokens(tokens: AuthTokens): Promise<void> {
-    await setPassword(this.serviceName, this.accountName, JSON.stringify(tokens));
+    const tokensWithTimestamp = {
+      ...tokens,
+      savedAt: Date.now(),
+    };
+    await setPassword(this.serviceName, this.accountName, JSON.stringify(tokensWithTimestamp));
   }
 
   async getTokens(): Promise<AuthTokens | null> {
@@ -29,11 +33,16 @@ export class KeychainService {
 
   async hasValidToken(): Promise<boolean> {
     const tokens = await this.getTokens();
-    if (!tokens) return false;
+    if (!tokens || !tokens.access_token) return false;
+
+    // If no savedAt timestamp, assume token is valid (for backward compatibility)
+    if (!tokens.savedAt) return true;
 
     const now = Date.now();
-    const expiresAt = now + new Date(tokens.expires_in).getTime() * 1000;
+    // expires_in is in seconds, convert to milliseconds
+    const expiresAt = tokens.savedAt + tokens.expires_in * 1000;
 
+    // Return true if token has more than 5 minutes until expiry
     return expiresAt - now > 5 * 60 * 1000;
   }
 }

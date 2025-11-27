@@ -3,6 +3,7 @@ export interface AuthTokens {
   token_type: string;
   expires_in: number;
   scope: string;
+  savedAt?: number; // timestamp when token was saved
 }
 
 export interface DeviceAuthResponse {

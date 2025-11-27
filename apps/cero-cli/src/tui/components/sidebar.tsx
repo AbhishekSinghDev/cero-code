@@ -1,59 +1,37 @@
-import type { ChatSession } from "../../types/tui.type";
+import { useChat } from "@tui/hooks/use-chat";
+import { useUI } from "@tui/hooks/use-ui";
+import { colors, theme } from "../theme";
 import { ChatList } from "./chat-list";
 import { CommandsDisplay } from "./commands";
 import { Logo } from "./logo";
 import { UserInfo } from "./user-info";
 
-interface SidebarProps {
-  chats: ChatSession[];
-  selectedChat: string;
-  focusedChatIndex: number;
-  onSelectChat: (id: string) => void;
-  width: number;
-  height: number;
-  collapsed: boolean;
-  onToggleCollapse: () => void;
-  showCommands?: boolean;
-}
+export function Sidebar() {
+  const { layout, sidebarCollapsed } = useUI();
+  const { messages } = useChat();
 
-export function Sidebar({
-  chats,
-  selectedChat,
-  focusedChatIndex,
-  onSelectChat,
-  width,
-  height,
-  collapsed,
-  showCommands,
-}: SidebarProps) {
-  const collapsedWidth = 4;
+  const showCommands = messages.length > 0;
 
-  if (collapsed) {
+  if (sidebarCollapsed) {
     return (
       <box
         style={{
-          width: collapsedWidth,
-          height,
-          backgroundColor: "#0a0a0a",
+          width: 0,
+          height: layout.height,
+          backgroundColor: theme.sidebar.bg,
           flexDirection: "column",
-          borderStyle: "single",
-          borderColor: "#1a1a1a",
+          borderStyle: "rounded",
+          borderColor: theme.sidebar.borderColor,
           border: true,
         }}
       >
         <box style={{ paddingLeft: 1 }}>
-          <text fg="#00ff88">◆</text>
+          <text fg={colors.primary}>◆</text>
         </box>
-        <box style={{ height: 1, backgroundColor: "#1a1a1a" }} />
-        <ChatList
-          chats={chats}
-          selectedId={selectedChat}
-          focusedIndex={focusedChatIndex}
-          onSelect={onSelectChat}
-          collapsed
-        />
+        <box style={{ height: 1, backgroundColor: theme.sidebar.dividerColor }} />
+        <ChatList />
         <box style={{ flexGrow: 1 }} />
-        <box style={{ height: 1, backgroundColor: "#1a1a1a" }} />
+        <box style={{ height: 1, backgroundColor: theme.sidebar.dividerColor }} />
         <UserInfo collapsed />
       </box>
     );
@@ -62,18 +40,18 @@ export function Sidebar({
   return (
     <box
       style={{
-        width,
-        height,
-        backgroundColor: "#0a0a0a",
+        width: layout.sidebarWidth,
+        height: layout.height,
+        backgroundColor: theme.sidebar.bg,
         flexDirection: "column",
-        borderStyle: "single",
-        borderColor: "#1a1a1a",
+        borderStyle: "rounded",
+        borderColor: theme.sidebar.borderColor,
         border: true,
       }}
     >
       {/* Header with Logo */}
       <box style={{ paddingLeft: 1, paddingRight: 1 }}>
-        <Logo compact={width < 28} />
+        <Logo compact={layout.sidebarWidth < 28} />
       </box>
 
       {/* New Chat Button */}
@@ -81,46 +59,46 @@ export function Sidebar({
         style={{
           marginLeft: 1,
           marginRight: 1,
-          backgroundColor: "#00ff88",
+          marginTop: 1,
+          marginBottom: 1,
+          height: 3,
+          backgroundColor: theme.sidebar.newChatButton.bg,
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <text fg="#000000">
+        <text fg={theme.sidebar.newChatButton.text}>
           <strong>+ New Chat</strong>
         </text>
       </box>
 
       {/* Section Header */}
-      <box style={{ paddingLeft: 1, paddingRight: 1, flexDirection: "row" }}>
-        <text fg="#555555">HISTORY</text>
-        <text fg="#444444"> [↑↓]</text>
+      <box style={{ paddingLeft: 1, paddingRight: 1, marginBottom: 1, flexDirection: "row" }}>
+        <text fg={theme.sidebar.sectionHeader.text}>HISTORY</text>
+        <text fg={theme.sidebar.sectionHeader.hint}> [↑↓]</text>
       </box>
 
       {/* Chat List */}
-      <ChatList
-        chats={chats}
-        selectedId={selectedChat}
-        focusedIndex={focusedChatIndex}
-        onSelect={onSelectChat}
-      />
+      <ChatList />
 
       {/* Commands or User Info */}
-      <box style={{ height: 1, backgroundColor: "#1a1a1a" }} />
+      <box style={{ height: 1, backgroundColor: theme.sidebar.dividerColor }} />
       {showCommands ? (
         <CommandsDisplay compact />
       ) : (
-        <box style={{ paddingLeft: 1, flexDirection: "row" }}>
-          <text fg="#555555">[n]</text>
-          <text fg="#444444"> new </text>
-          <text fg="#555555">[b]</text>
-          <text fg="#444444"> sidebar</text>
+        <box style={{ paddingLeft: 1, flexDirection: "row", minHeight: 2 }}>
+          <text fg={theme.sidebar.sectionHeader.text}>[n]</text>
+          <text fg={theme.sidebar.sectionHeader.hint}> new </text>
+          <text fg={theme.sidebar.sectionHeader.text}>[b]</text>
+          <text fg={theme.sidebar.sectionHeader.hint}> sidebar</text>
         </box>
       )}
 
       {/* User Info */}
-      <box style={{ height: 1, backgroundColor: "#1a1a1a" }} />
-      <UserInfo />
+      <box style={{ height: 1, backgroundColor: theme.sidebar.dividerColor }} />
+      <box style={{ minHeight: 3 }}>
+        <UserInfo />
+      </box>
     </box>
   );
 }

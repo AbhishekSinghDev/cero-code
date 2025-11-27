@@ -1,6 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { relations } from "drizzle-orm";
 import { boolean, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { messageRoleEnum } from "./enum";
 import { timestamps } from "./helper";
 
 // Tables
@@ -84,6 +85,7 @@ export const conversation = pgTable("conversation", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  shortTitle: text("short_title"),
   ...timestamps,
 });
 
@@ -94,9 +96,8 @@ export const message = pgTable("message", {
   conversationId: text("conversation_id")
     .notNull()
     .references(() => conversation.id, { onDelete: "cascade" }),
-  shortTitle: text("short_title"),
-  userQuery: text("user_query").notNull(),
-  aiResponse: text("ai_response").notNull(),
+  role: messageRoleEnum().notNull(),
+  content: text("content").notNull(),
   ...timestamps,
 });
 

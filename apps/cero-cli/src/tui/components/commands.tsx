@@ -1,9 +1,5 @@
-// Keyboard shortcuts/commands reference
-export interface Command {
-  key: string;
-  description: string;
-  context?: "global" | "sidebar" | "chat";
-}
+import type { Command } from "types/tui.type";
+import { colors, theme } from "../theme";
 
 export const COMMANDS: Command[] = [
   { key: "n", description: "New chat", context: "global" },
@@ -24,19 +20,19 @@ interface CommandsDisplayProps {
 export function CommandsDisplay({ showFull = false, compact = false }: CommandsDisplayProps) {
   if (compact) {
     return (
-      <box style={{ flexDirection: "column", paddingLeft: 1 }}>
-        <text fg="#444444">─── Keys ───</text>
+      <box style={{ flexDirection: "column", paddingLeft: 1, height: 3 }}>
+        <text fg={theme.commands.divider}>─── Keys ───</text>
         <box style={{ flexDirection: "row" }}>
-          <text fg="#555555">[n]</text>
-          <text fg="#444444"> new </text>
-          <text fg="#555555">[b]</text>
-          <text fg="#444444"> sidebar</text>
+          <text fg={theme.commands.key}>[n]</text>
+          <text fg={theme.commands.divider}> new </text>
+          <text fg={theme.commands.key}>[b]</text>
+          <text fg={theme.commands.divider}> sidebar</text>
         </box>
         <box style={{ flexDirection: "row" }}>
-          <text fg="#555555">[↑↓]</text>
-          <text fg="#444444"> nav </text>
-          <text fg="#555555">[↵]</text>
-          <text fg="#444444"> select</text>
+          <text fg={theme.commands.key}>[↑↓]</text>
+          <text fg={theme.commands.divider}> nav </text>
+          <text fg={theme.commands.key}>[↵]</text>
+          <text fg={theme.commands.divider}> select</text>
         </box>
       </box>
     );
@@ -54,15 +50,15 @@ export function CommandsDisplay({ showFull = false, compact = false }: CommandsD
       >
         {/* Logo */}
         <box style={{ marginBottom: 1, flexDirection: "column", alignItems: "center" }}>
-          <text fg="#00ff88">
-            <strong>◆ CEROCODE</strong>
+          <text fg={colors.primary}>
+            <strong>CEROCODE</strong>
           </text>
-          <text fg="#555555">AI-Powered CLI</text>
+          <text fg={theme.logo.subtitle}>Agentic CLI</text>
         </box>
 
         {/* Welcome message */}
         <box style={{ marginBottom: 1 }}>
-          <text fg="#666666">Welcome! Start typing or use these commands:</text>
+          <text fg={theme.commands.welcome}>Welcome! Start typing or use these commands:</text>
         </box>
 
         {/* Commands box */}
@@ -70,64 +66,64 @@ export function CommandsDisplay({ showFull = false, compact = false }: CommandsD
           style={{
             flexDirection: "column",
             border: true,
-            borderStyle: "single",
-            borderColor: "#222222",
+            borderStyle: "rounded",
+            borderColor: theme.commands.box.border,
             paddingLeft: 1,
             paddingRight: 1,
-            backgroundColor: "#0a0a0a",
+            backgroundColor: theme.commands.box.bg,
             width: 40,
           }}
         >
-          <text fg="#888888">
+          <text fg={theme.commands.box.header}>
             <strong>⌨ Keyboard Shortcuts</strong>
           </text>
 
           {/* Global */}
-          <text fg="#444444">── Global ──</text>
+          <text fg={theme.commands.sectionHeader}>── Global ──</text>
           <text>
-            <span fg="#00ff88">n </span>
-            <span fg="#888888">New chat</span>
+            <span fg={theme.commands.keyHighlight}>n </span>
+            <span fg={theme.commands.keyDescription}>New chat</span>
           </text>
           <text>
-            <span fg="#00ff88">Tab </span>
-            <span fg="#888888">Switch focus</span>
+            <span fg={theme.commands.keyHighlight}>Tab </span>
+            <span fg={theme.commands.keyDescription}>Switch focus</span>
           </text>
           <text>
-            <span fg="#00ff88">Esc </span>
-            <span fg="#888888">Exit / Close</span>
+            <span fg={theme.commands.keyHighlight}>Esc </span>
+            <span fg={theme.commands.keyDescription}>Exit / Close</span>
           </text>
 
           {/* Sidebar */}
-          <text fg="#444444">── Sidebar ──</text>
+          <text fg={theme.commands.sectionHeader}>── Sidebar ──</text>
           <text>
-            <span fg="#00ff88">b </span>
-            <span fg="#888888">Toggle sidebar</span>
+            <span fg={theme.commands.keyHighlight}>b </span>
+            <span fg={theme.commands.keyDescription}>Toggle sidebar</span>
           </text>
           <text>
-            <span fg="#00ff88">↑↓ j/k </span>
-            <span fg="#888888">Navigate history</span>
+            <span fg={theme.commands.keyHighlight}>↑↓ j/k </span>
+            <span fg={theme.commands.keyDescription}>Navigate history</span>
           </text>
           <text>
-            <span fg="#00ff88">Enter </span>
-            <span fg="#888888">Select chat</span>
+            <span fg={theme.commands.keyHighlight}>Enter </span>
+            <span fg={theme.commands.keyDescription}>Select chat</span>
           </text>
 
           {/* Chat */}
-          <text fg="#444444">── Chat ──</text>
+          <text fg={theme.commands.sectionHeader}>── Chat ──</text>
           <text>
-            <span fg="#00ff88">m </span>
-            <span fg="#888888">Change AI model</span>
+            <span fg={theme.commands.keyHighlight}>m </span>
+            <span fg={theme.commands.keyDescription}>Change AI model</span>
           </text>
           <text>
-            <span fg="#00ff88">1-5 </span>
-            <span fg="#888888">Quick model select</span>
+            <span fg={theme.commands.keyHighlight}>1-5 </span>
+            <span fg={theme.commands.keyDescription}>Quick model select</span>
           </text>
         </box>
 
         <box style={{ marginTop: 1, flexDirection: "row" }}>
-          <text fg="#444444">Press [</text>
-          <text fg="#00ff88">n</text>
-          <text fg="#444444">] to start a new chat</text>
+          <text fg={theme.commands.divider}>Press [</text>
+          <text fg={colors.primary}>n</text>
+          <text fg={theme.commands.divider}>] to start a new chat</text>
         </box>
       </box>
     );

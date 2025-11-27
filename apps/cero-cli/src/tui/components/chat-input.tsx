@@ -1,37 +1,50 @@
-import type { AIModel } from "../../types/tui.type";
+import { useChat } from "@tui/hooks/use-chat";
+import { useUI } from "@tui/hooks/use-ui";
+import { AI_MODELS } from "../context/ui-context";
+import { theme } from "../theme";
 
-interface ModelSelectorProps {
-  models: AIModel[];
-  selectedModel: string;
-  onSelect: (modelId: string) => void;
-  expanded: boolean;
-  onToggle: () => void;
-}
+function ModelSelector() {
+  const { selectedModel } = useUI();
 
-export function ModelSelector({ models, selectedModel }: ModelSelectorProps) {
   return (
     <box
       style={{
         flexDirection: "column",
-        backgroundColor: "#0a0a0a",
+        backgroundColor: theme.modelSelector.bg,
         border: true,
-        borderStyle: "single",
-        borderColor: "#333333",
+        borderStyle: "rounded",
+        borderColor: theme.modelSelector.borderColor,
         marginLeft: 1,
         marginRight: 1,
       }}
     >
       <box style={{ paddingLeft: 1 }}>
-        <text fg="#666666">Select Model (1-5):</text>
+        <text fg={theme.modelSelector.header}>Select Model (1-5):</text>
       </box>
-      {models.map((model, idx) => {
+      {AI_MODELS.map((model, idx) => {
         const isSelected = model.id === selectedModel;
         return (
           <box key={model.id} style={{ paddingLeft: 1, flexDirection: "row" }}>
-            <text fg="#444444">{idx + 1}. </text>
-            <text fg={isSelected ? "#00ff88" : "#888888"}>{isSelected ? "● " : "○ "}</text>
-            <text fg={isSelected ? "#00ff88" : "#ffffff"}>{model.name}</text>
-            <text fg="#444444"> [{model.provider}]</text>
+            <text fg={theme.modelSelector.number}>{idx + 1}. </text>
+            <text
+              fg={
+                isSelected
+                  ? theme.modelSelector.bullet.selected
+                  : theme.modelSelector.bullet.default
+              }
+            >
+              {isSelected ? "● " : "○ "}
+            </text>
+            <text
+              fg={
+                isSelected
+                  ? theme.modelSelector.name.selected
+                  : theme.modelSelector.name.default
+              }
+            >
+              {model.name}
+            </text>
+            <text fg={theme.modelSelector.provider}> [{model.provider}]</text>
           </box>
         );
       })}
@@ -39,32 +52,15 @@ export function ModelSelector({ models, selectedModel }: ModelSelectorProps) {
   );
 }
 
-interface ChatInputProps {
-  models: AIModel[];
-  selectedModel: string;
-  onModelSelect: (modelId: string) => void;
-  modelSelectorOpen: boolean;
-  onToggleModelSelector: () => void;
-  onInputChange: (value: string) => void;
-  onSubmit: (value: string) => void;
-  focused: boolean;
-  disabled?: boolean;
-}
+export function ChatInput() {
+  const { selectedModel, modelSelectorOpen, inputFocused, isInputDisabled } = useUI();
+  const { sendMessage } = useChat();
 
-export function ChatInput({
-  models,
-  selectedModel,
-  modelSelectorOpen,
-  onInputChange,
-  onSubmit,
-  focused,
-  disabled = false,
-}: ChatInputProps) {
-  const current = models.find((m) => m.id === selectedModel) ?? models[0];
+  const currentModel = AI_MODELS.find((m) => m.id === selectedModel) ?? AI_MODELS[0];
 
   const handleSubmit = (value: string) => {
-    if (!disabled) {
-      onSubmit(value);
+    if (!isInputDisabled && value.trim()) {
+      sendMessage(value);
     }
   };
 
@@ -72,30 +68,22 @@ export function ChatInput({
     <box
       style={{
         flexDirection: "column",
-        backgroundColor: "#0a0a0a",
+        backgroundColor: theme.input.bg,
       }}
     >
       {/* Model selector dropdown */}
-      {modelSelectorOpen && (
-        <ModelSelector
-          models={models}
-          selectedModel={selectedModel}
-          onSelect={() => {}}
-          expanded={modelSelectorOpen}
-          onToggle={() => {}}
-        />
-      )}
+      {modelSelectorOpen && <ModelSelector />}
 
       {/* Model info row */}
       <box style={{ paddingLeft: 1, paddingRight: 1, flexDirection: "row" }}>
-        <text fg="#444444">⚡</text>
-        <text fg="#00ff88"> {current?.name}</text>
-        <text fg="#333333"> • </text>
-        <text fg="#444444">[m] change model</text>
-        {disabled && (
+        <text fg={theme.input.model.icon}>⚡</text>
+        <text fg={theme.input.model.name}> {currentModel?.name}</text>
+        <text fg={theme.input.model.separator}> • </text>
+        <text fg={theme.input.model.hint}>[m] change model</text>
+        {isInputDisabled && (
           <>
-            <text fg="#333333"> • </text>
-            <text fg="#ffaa00">⏳ Generating...</text>
+            <text fg={theme.input.model.separator}> • </text>
+            <text fg={theme.input.model.generating}>⏳ Generating...</text>
           </>
         )}
       </box>
@@ -108,17 +96,20 @@ export function ChatInput({
           marginRight: 1,
           marginBottom: 1,
           border: true,
-          borderStyle: focused && !disabled ? "double" : "single",
-          borderColor: disabled ? "#333333" : focused ? "#00ff88" : "#222222",
-          backgroundColor: disabled ? "#050505" : "#0f0f0f",
+          borderStyle: inputFocused && !isInputDisabled ? "double" : "single",
+          borderColor: isInputDisabled
+            ? theme.input.borderColorDisabled
+            : inputFocused
+              ? theme.input.borderColorFocused
+              : theme.input.borderColor,
+          backgroundColor: isInputDisabled ? theme.input.fieldBgDisabled : theme.input.fieldBg,
         }}
       >
         <input
           placeholder={
-            disabled ? "Waiting for response..." : "Type a message… (Enter to send)"
+            isInputDisabled ? "Waiting for response..." : "Type a message… (Enter to send)"
           }
-          focused={focused && !disabled}
-          onInput={onInputChange}
+          focused={inputFocused && !isInputDisabled}
           onSubmit={handleSubmit}
         />
       </box>

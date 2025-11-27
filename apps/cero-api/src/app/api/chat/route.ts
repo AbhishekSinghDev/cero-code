@@ -1,8 +1,11 @@
-import { subscribe } from "@inngest/realtime";
-import { NextResponse } from "next/server";
 import { chatSchema } from "@/lib/zod-schema";
+import { db } from "@/server/db";
+import { conversation } from "@/server/db/schema";
 import { inngest } from "@/server/inngest/client";
 import { getAuthenticatedUser } from "@/server/utils/get-user";
+import { tryCatch } from "@/server/utils/try-catch";
+import { subscribe } from "@inngest/realtime";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   const user = await getAuthenticatedUser(request.headers);
@@ -21,35 +24,82 @@ export async function POST(request: Request) {
     });
   }
 
-  const conversationId = crypto.randomUUID();
+  let finalConversationId = parseResult.data.conversationId;
 
-  await inngest.send({
-    name: "chat/process",
-    data: {
+  // conversationId not provided, create a new conversation
+  if (!parseResult.data.conversationId) {
+    const { data: conversationData, error: conversationError } = await tryCatch(
+      db
+        .insert(conversation)
+        .values({
+          userId: user.id,
+        })
+        .returning()
+    );
+
+    const newConversation = conversationData?.at(0);
+
+    if (conversationError || !newConversation) {
+      console.error("Error creating conversation:", conversationError);
+      return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    }
+
+    finalConversationId = newConversation.id;
+  }
+
+  const { error: inngestError } = await tryCatch(
+    inngest.send({
+      name: "chat/process",
       data: {
-        message: parseResult.data.message,
-        userId: user.id,
-        conversationId,
+        data: {
+          message: parseResult.data.message,
+          userId: user.id,
+          conversationId: finalConversationId,
+        },
       },
+    })
+  );
+
+  if (inngestError) {
+    console.error("Error sending inngest event:", inngestError);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+
+  const { data: stream, error: streamError } = await tryCatch(
+    subscribe({
+      app: inngest,
+      channel: `chat.${finalConversationId}`,
+      topics: ["token", "done", "error"],
+    })
+  );
+
+  if (streamError) {
+    console.error("Error subscribing to stream:", streamError);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+
+  // Create a transform stream to prepend the conversationId
+  const transformStream = new TransformStream({
+    start(controller) {
+      // Send conversationId as the first message
+      const initMessage =
+        JSON.stringify({ topic: "init", data: { conversationId: finalConversationId } }) +
+        "\n";
+      controller.enqueue(new TextEncoder().encode(initMessage));
+    },
+    transform(chunk, controller) {
+      controller.enqueue(chunk);
     },
   });
 
-  try {
-    const stream = await subscribe({
-      app: inngest,
-      channel: `chat.${conversationId}`,
-      topics: ["token", "done", "error"],
-    });
+  // Pipe the original stream through the transform
+  stream.getEncodedStream().pipeTo(transformStream.writable);
 
-    return new Response(stream.getEncodedStream(), {
-      headers: {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-      },
-    });
-  } catch (err) {
-    console.error("Chat API error:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
-  }
+  return new Response(transformStream.readable, {
+    headers: {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+    },
+  });
 }

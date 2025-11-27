@@ -1,9 +1,11 @@
-import type { Message } from "../../types/tui.type";
+import { useChat } from "@tui/hooks/use-chat";
+import type { ApiMessage } from "types/tui.type";
+import { theme } from "../theme";
 import { CommandsDisplay } from "./commands";
 
 interface MessageBubbleProps {
-  message: Message;
-  isStreaming?: boolean;
+  message: ApiMessage;
+  isStreaming: boolean;
 }
 
 function MessageBubble({ message, isStreaming }: MessageBubbleProps) {
@@ -13,28 +15,30 @@ function MessageBubble({ message, isStreaming }: MessageBubbleProps) {
   return (
     <box
       style={{
-        marginLeft: isUser ? 2 : 0,
-        marginRight: isUser ? 0 : 2,
-        marginBottom: 1,
-        paddingLeft: 1,
-        paddingRight: 1,
-        backgroundColor: isUser ? "#0d2818" : "#141414",
-        borderColor: isUser ? "#00ff88" : isStreaming ? "#4488ff" : "#2a2a2a",
-        borderStyle: "single",
+        marginLeft: isUser ? 4 : 0,
+        marginRight: isUser ? 0 : 4,
+        paddingLeft: 2,
+        paddingRight: 2,
+        borderColor: isUser
+          ? theme.message.user.borderColor
+          : isStreaming
+            ? theme.message.assistant.borderColorStreaming
+            : theme.message.assistant.borderColor,
+        borderStyle: "rounded",
         border: true,
       }}
     >
       <box style={{ flexDirection: "column" }}>
         {/* Header */}
         <box style={{ flexDirection: "row" }}>
-          <text fg={isUser ? "#00ff88" : "#888888"}>
+          <text fg={isUser ? theme.message.user.name : theme.message.assistant.name}>
             <strong>{isUser ? "You" : "◆ Cero"}</strong>
           </text>
-          <text fg="#444444"> · {message.timestamp}</text>
-          {isStreaming && <text fg="#4488ff"> ● streaming</text>}
+          <text fg={theme.message.timestamp}> · {message.timestamp}</text>
+          {isStreaming && <text fg={theme.message.streaming}> ● streaming</text>}
         </box>
         {/* Content */}
-        {!isEmpty && <text fg="#e0e0e0">{message.content}</text>}
+        {!isEmpty && <text fg={theme.message.content}>{message.content}</text>}
       </box>
     </box>
   );
@@ -49,65 +53,28 @@ function LoadingIndicator() {
         marginBottom: 1,
         paddingLeft: 1,
         paddingRight: 1,
-        backgroundColor: "#141414",
-        borderColor: "#4488ff",
-        borderStyle: "single",
+        backgroundColor: theme.loading.bg,
+        borderColor: theme.loading.borderColor,
+        borderStyle: "rounded",
         border: true,
       }}
     >
       <box style={{ flexDirection: "column" }}>
         <box style={{ flexDirection: "row" }}>
-          <text fg="#888888">
+          <text fg={theme.loading.name}>
             <strong>◆ Cero</strong>
           </text>
-          <text fg="#4488ff"> ● thinking...</text>
+          <text fg={theme.loading.status}> ● thinking...</text>
         </box>
-        <text fg="#666666">Processing your request...</text>
+        <text fg={theme.loading.text}>Processing your request...</text>
       </box>
     </box>
   );
 }
 
-function AuthWarning() {
-  return (
-    <box
-      style={{
-        margin: 1,
-        padding: 1,
-        backgroundColor: "#2a2015",
-        borderColor: "#ffaa44",
-        borderStyle: "single",
-        border: true,
-        alignItems: "center",
-      }}
-    >
-      <box style={{ flexDirection: "column", alignItems: "center" }}>
-        <text fg="#ffaa44">
-          <strong>⚠ Authentication Required</strong>
-        </text>
-        <text fg="#888888">Run 'cero login' in your terminal to authenticate</text>
-      </box>
-    </box>
-  );
-}
+export function MessageList() {
+  const { messages, chatTitle, isNewChat, isLoading, isStreaming } = useChat();
 
-interface MessageListProps {
-  messages: Message[];
-  chatTitle: string;
-  isNewChat?: boolean;
-  isLoading?: boolean;
-  isStreaming?: boolean;
-  isAuthenticated?: boolean;
-}
-
-export function MessageList({
-  messages,
-  chatTitle,
-  isNewChat,
-  isLoading,
-  isStreaming,
-  isAuthenticated,
-}: MessageListProps) {
   const showCommands = isNewChat && messages.length === 0;
 
   return (
@@ -117,58 +84,52 @@ export function MessageList({
         style={{
           paddingLeft: 1,
           paddingRight: 1,
-          backgroundColor: "#0a0a0a",
+          backgroundColor: theme.chatArea.header.bg,
           flexDirection: "row",
           alignItems: "center",
         }}
       >
-        <text fg="#00ff88">
+        <text fg={theme.chatArea.header.icon}>
           <strong>◆</strong>
         </text>
-        <text fg="#ffffff">
+        <text fg={theme.chatArea.header.title}>
           {" "}
           <strong>{chatTitle}</strong>
         </text>
-        {isAuthenticated === false && <text fg="#ff6666"> [Not Authenticated]</text>}
-        {isAuthenticated === true && <text fg="#00ff88"> [Connected]</text>}
+        <text fg={theme.chatArea.header.status}> [Connected]</text>
       </box>
 
       {/* Divider */}
-      <box style={{ height: 1, backgroundColor: "#1a1a1a" }} />
+      <box style={{ height: 1, backgroundColor: theme.chatArea.divider }} />
 
       {/* Messages or Commands */}
       {showCommands ? (
-        <>
-          {isAuthenticated === false && <AuthWarning />}
-          <CommandsDisplay showFull />
-        </>
+        <CommandsDisplay showFull />
       ) : (
         <scrollbox
           stickyScroll
           stickyStart="bottom"
           style={{
             flexGrow: 1,
-            rootOptions: { backgroundColor: "#000000" },
-            wrapperOptions: { backgroundColor: "#000000" },
-            viewportOptions: { backgroundColor: "#000000" },
-            contentOptions: { backgroundColor: "#000000", paddingTop: 1 },
+            rootOptions: { backgroundColor: theme.chatArea.bg },
+            wrapperOptions: { backgroundColor: theme.chatArea.bg },
+            viewportOptions: { backgroundColor: theme.chatArea.bg },
+            contentOptions: { backgroundColor: theme.chatArea.bg, paddingTop: 1 },
             scrollbarOptions: {
               showArrows: false,
               trackOptions: {
-                foregroundColor: "#00ff88",
-                backgroundColor: "#1a1a1a",
+                foregroundColor: theme.chatArea.scrollbar.thumb,
+                backgroundColor: theme.chatArea.scrollbar.track,
               },
             },
           }}
         >
           {messages.map((msg, idx) => {
-            // Check if this is the last assistant message (potentially streaming)
             const isLastAssistant =
-              msg.role === "assistant" && idx === messages.length - 1 && isStreaming === true;
+              msg.role === "assistant" && idx === messages.length - 1 && isStreaming;
 
             return <MessageBubble key={msg.id} message={msg} isStreaming={isLastAssistant} />;
           })}
-          {/* Show loading indicator when waiting for first token */}
           {isLoading && <LoadingIndicator />}
         </scrollbox>
       )}
