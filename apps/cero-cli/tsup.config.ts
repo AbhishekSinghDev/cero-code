@@ -5,8 +5,9 @@ export default defineConfig({
   format: ["esm"],
   clean: true,
   minify: true,
-  // Don't bundle OpenTUI - it requires Bun runtime
+  // Bundle workspace packages but keep OpenTUI external
   external: ["@opentui/core", "@opentui/react"],
+  noExternal: ["@cerocode/constants"], // Bundle this workspace package
   banner: {
     js: "#!/usr/bin/env bun",
   },
