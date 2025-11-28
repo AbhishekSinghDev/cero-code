@@ -14,7 +14,7 @@ export const parsers: FiletypeParserOptions[] = [
     wasm: "https://github.com/tree-sitter/tree-sitter-python/releases/download/v0.23.6/tree-sitter-python.wasm",
     queries: {
       highlights: [
-        "https://github.com/tree-sitter/tree-sitter-python/raw/refs/heads/master/queries/highlights.scm",
+        "https://raw.githubusercontent.com/tree-sitter/tree-sitter-python/master/queries/highlights.scm",
       ],
     },
   },
@@ -95,7 +95,7 @@ export const parsers: FiletypeParserOptions[] = [
     wasm: "https://github.com/tree-sitter/tree-sitter-php/releases/download/v0.24.2/tree-sitter-php.wasm",
     queries: {
       highlights: [
-        "https://github.com/tree-sitter/tree-sitter-php/raw/refs/heads/master/queries/highlights.scm",
+        "https://raw.githubusercontent.com/tree-sitter/tree-sitter-php/master/queries/highlights.scm",
       ],
     },
   },
@@ -122,7 +122,7 @@ export const parsers: FiletypeParserOptions[] = [
     wasm: "https://github.com/tree-sitter/tree-sitter-html/releases/download/v0.23.2/tree-sitter-html.wasm",
     queries: {
       highlights: [
-        "https://github.com/tree-sitter/tree-sitter-html/raw/refs/heads/master/queries/highlights.scm",
+        "https://raw.githubusercontent.com/tree-sitter/tree-sitter-html/master/queries/highlights.scm",
       ],
     },
   },
