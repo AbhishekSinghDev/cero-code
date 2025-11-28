@@ -13,7 +13,8 @@
   },
   "workspaces": {
     "packages": [
-      "apps/*"
+      "apps/*",
+      "packages/*"
     ],
     "catalog": {
       "@types/react": "19.2.6",

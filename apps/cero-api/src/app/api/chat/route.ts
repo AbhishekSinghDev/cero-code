@@ -4,6 +4,7 @@ import { conversation } from "@/server/db/schema";
 import { inngest } from "@/server/inngest/client";
 import { getAuthenticatedUser } from "@/server/utils/get-user";
 import { tryCatch } from "@/server/utils/try-catch";
+import { DEFAULT_AI_MODEL_ID } from "@cerocode/constants";
 import { subscribe } from "@inngest/realtime";
 import { NextResponse } from "next/server";
 
@@ -24,6 +25,7 @@ export async function POST(request: Request) {
     });
   }
 
+  const selectedAiModel = parseResult.data.aiModel ?? DEFAULT_AI_MODEL_ID;
   let finalConversationId = parseResult.data.conversationId;
 
   // conversationId not provided, create a new conversation
@@ -33,6 +35,7 @@ export async function POST(request: Request) {
         .insert(conversation)
         .values({
           userId: user.id,
+          shortTitle: parseResult.data.message.slice(0, 50),
         })
         .returning()
     );
@@ -51,11 +54,10 @@ export async function POST(request: Request) {
     inngest.send({
       name: "chat/process",
       data: {
-        data: {
-          message: parseResult.data.message,
-          userId: user.id,
-          conversationId: finalConversationId,
-        },
+        message: parseResult.data.message,
+        userId: user.id,
+        conversationId: finalConversationId,
+        aiModel: selectedAiModel,
       },
     })
   );

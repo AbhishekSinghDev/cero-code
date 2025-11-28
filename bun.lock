@@ -1,6 +1,5 @@
 {
   "lockfileVersion": 1,
-  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "cerocode-monorepo",
@@ -11,10 +10,11 @@
     },
     "apps/cero-api": {
       "name": "cero-api",
-      "version": "0.1.7",
+      "version": "0.3.8",
       "dependencies": {
         "@ai-sdk/google": "^2.0.40",
         "@auth/drizzle-adapter": "^1.11.1",
+        "@cerocode/constants": "workspace:*",
         "@inngest/realtime": "^0.4.5",
         "@neondatabase/serverless": "^1.0.2",
         "@paralleldrive/cuid2": "^3.0.4",
@@ -36,11 +36,12 @@
     },
     "apps/cero-cli": {
       "name": "cerocode",
-      "version": "0.0.5",
+      "version": "0.4.0",
       "bin": {
         "cero": "dist/index.js",
       },
       "dependencies": {
+        "@cerocode/constants": "workspace:*",
         "@opentui/core": "^0.1.50",
         "@opentui/react": "^0.1.50",
         "better-auth": "^1.4.1",
@@ -127,6 +128,10 @@
         "typescript": "^5.9.3",
       },
     },
+    "packages/constants": {
+      "name": "@cerocode/constants",
+      "version": "0.0.1",
+    },
   },
   "catalog": {
     "@types/react": "19.2.6",
@@ -176,6 +181,8 @@
     "@biomejs/cli-win32-x64": ["@biomejs/cli-win32-x64@2.3.7", "", { "os": "win32", "cpu": "x64" }, "sha512-pulzUshqv9Ed//MiE8MOUeeEkbkSHVDVY5Cz5wVAnH1DUqliCQG3j6s1POaITTFqFfo7AVIx2sWdKpx/GS+Nqw=="],
 
     "@bufbuild/protobuf": ["@bufbuild/protobuf@2.10.1", "", {}, "sha512-ckS3+vyJb5qGpEYv/s1OebUHDi/xSNtfgw1wqKZo7MR9F2z+qXr0q5XagafAG/9O0QPVIUfST0smluYSTpYFkg=="],
+
+    "@cerocode/constants": ["@cerocode/constants@workspace:packages/constants"],
 
     "@date-fns/tz": ["@date-fns/tz@1.4.1", "", {}, "sha512-P5LUNhtbj6YfI3iJjw5EL9eUAG6OitD0W3fWQcpQjDRc/QIsL0tRNuO1PcDvPccWL1fSTXXdE1ds+l95DV/OFA=="],
 

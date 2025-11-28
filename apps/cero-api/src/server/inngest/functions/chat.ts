@@ -1,10 +1,10 @@
+import { inngestChatFunctionSchema } from "@/lib/zod-schema";
 import { db } from "@/server/db";
-import { conversation, message } from "@/server/db/schema";
+import { message } from "@/server/db/schema";
 import { tryCatch } from "@/server/utils/try-catch";
-import type { Events, RealtimeContext } from "@/types/inngest";
+import type { RealtimeContext } from "@/types/inngest";
 import { google } from "@ai-sdk/google";
 import { streamText } from "ai";
-import { eq } from "drizzle-orm";
 import { chatChannel } from "../channels";
 import { inngest } from "../client";
 
@@ -12,24 +12,26 @@ export const processChat = inngest.createFunction(
   {
     id: "chat-message-process",
     name: "Process Chat Message",
+    retries: 1,
   },
   { event: "chat/process" },
   async (ctx: RealtimeContext) => {
     const { event, step, publish } = ctx;
-    const eventData = event.data as unknown as Events["chat/process"];
 
-    if (!eventData?.data) {
-      throw new Error("Please provide all the required data to process the chat");
+    const parseEventData = inngestChatFunctionSchema.safeParse(event.data);
+    if (!parseEventData.success || parseEventData.error) {
+      throw new Error("Invalid event data");
     }
+    const eventData = parseEventData.data;
 
     try {
       // First, save the user message
       await step.run("save-user-message", async () => {
         const { error: insertError } = await tryCatch(
           db.insert(message).values({
-            conversationId: eventData.data.conversationId,
+            conversationId: eventData.conversationId,
             role: "user",
-            content: eventData.data.message,
+            content: eventData.message,
           })
         );
 
@@ -41,7 +43,7 @@ export const processChat = inngest.createFunction(
 
       const result = await step.run("stream-ai-response", async () => {
         const result = streamText({
-          model: google("gemini-2.0-flash-lite"),
+          model: google(eventData.aiModel),
           messages: [
             {
               role: "system",
@@ -49,7 +51,7 @@ export const processChat = inngest.createFunction(
             },
             {
               role: "user",
-              content: eventData.data.message,
+              content: eventData.message,
             },
           ],
         });
@@ -61,12 +63,11 @@ export const processChat = inngest.createFunction(
           fullText += chunk;
 
           // Publish each token to Realtime channel
-          await publish(chatChannel(eventData.data.conversationId).token(chunk));
+          await publish(chatChannel(eventData.conversationId).token(chunk));
         }
 
         // Signal completion
-        await publish(chatChannel(eventData.data.conversationId).done({ fullText }));
-
+        await publish(chatChannel(eventData.conversationId).done({ fullText }));
         return { success: true, text: fullText };
       });
 
@@ -74,7 +75,7 @@ export const processChat = inngest.createFunction(
       await step.run("save-assistant-message", async () => {
         const { error: insertError } = await tryCatch(
           db.insert(message).values({
-            conversationId: eventData.data.conversationId,
+            conversationId: eventData.conversationId,
             role: "assistant",
             content: result.text,
           })
@@ -85,25 +86,10 @@ export const processChat = inngest.createFunction(
           throw insertError;
         }
       });
-
-      // Update conversation shortTitle if not set (use first 50 chars of first user message)
-      await step.run("update-conversation-title", async () => {
-        const { error: updateError } = await tryCatch(
-          db
-            .update(conversation)
-            .set({ shortTitle: eventData.data.message.slice(0, 50) })
-            .where(eq(conversation.id, eventData.data.conversationId))
-        );
-
-        if (updateError) {
-          console.error("Error updating conversation title:", updateError);
-          // Non-critical, don't throw
-        }
-      });
     } catch (err) {
       console.error("Error in chat processing:", err);
       await publish(
-        chatChannel(eventData.data.conversationId).error({
+        chatChannel(eventData.conversationId).error({
           error: err instanceof Error ? err.message : "Unknown error",
         })
       );

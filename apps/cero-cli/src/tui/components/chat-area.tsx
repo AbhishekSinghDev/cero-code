@@ -14,13 +14,11 @@ export function ChatArea() {
         height: layout.height,
         backgroundColor: colors.bg1,
         flexDirection: "column",
+        flexGrow: 1,
+        overflow: "hidden",
       }}
     >
       <MessageList />
-
-      {/* Divider */}
-      <box />
-
       <ChatInput />
     </box>
   );

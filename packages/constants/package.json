@@ -1,0 +1,8 @@
+{
+  "name": "@cerocode/constants",
+  "version": "0.0.1",
+  "description": "Constants for CeroCode projects",
+  "exports": {
+    ".": "./index.ts"
+  }
+}

@@ -25,8 +25,8 @@ const matrixColors: ThemeColors = {
   fg3: "#8888a0",
   fg4: "#666678",
   fg5: "#555566",
-  border1: "rgba(255, 255, 255, 0.08)",
-  border2: "rgba(255, 255, 255, 0.05)",
+  border1: "#1f1f2a",
+  border2: "#16161e",
   border3: "#00ff41",
 };
 
@@ -54,8 +54,8 @@ const draculaColors: ThemeColors = {
   fg3: "#a0a0b0",
   fg4: "#808090",
   fg5: "#606070",
-  border1: "rgba(255, 255, 255, 0.1)",
-  border2: "rgba(255, 255, 255, 0.06)",
+  border1: "#3d3f4a",
+  border2: "#2f3039",
   border3: "#bd93f9",
 };
 
@@ -83,8 +83,8 @@ const nordColors: ThemeColors = {
   fg3: "#a0aab8",
   fg4: "#7a8696",
   fg5: "#5a6478",
-  border1: "rgba(236, 239, 244, 0.1)",
-  border2: "rgba(236, 239, 244, 0.06)",
+  border1: "#4a5264",
+  border2: "#3b4252",
   border3: "#88c0d0",
 };
 
@@ -112,8 +112,8 @@ const monokaiColors: ThemeColors = {
   fg3: "#939293",
   fg4: "#727072",
   fg5: "#5b595c",
-  border1: "rgba(255, 255, 255, 0.1)",
-  border2: "rgba(255, 255, 255, 0.06)",
+  border1: "#3d3a3e",
+  border2: "#322f32",
   border3: "#a9dc76",
 };
 
@@ -141,8 +141,8 @@ const catppuccinColors: ThemeColors = {
   fg3: "#9399b2",
   fg4: "#7f849c",
   fg5: "#6c7086",
-  border1: "rgba(205, 214, 244, 0.1)",
-  border2: "rgba(205, 214, 244, 0.06)",
+  border1: "#3a3b4d",
+  border2: "#2a2b3d",
   border3: "#cba6f7",
 };
 
@@ -170,8 +170,8 @@ const solarizedColors: ThemeColors = {
   fg3: "#93a1a1",
   fg4: "#839496",
   fg5: "#657b83",
-  border1: "rgba(147, 161, 161, 0.15)",
-  border2: "rgba(147, 161, 161, 0.08)",
+  border1: "#1a4555",
+  border2: "#0f3642",
   border3: "#268bd2",
 };
 
@@ -199,8 +199,8 @@ const gruvboxColors: ThemeColors = {
   fg3: "#a89984",
   fg4: "#928374",
   fg5: "#7c6f64",
-  border1: "rgba(235, 219, 178, 0.12)",
-  border2: "rgba(235, 219, 178, 0.06)",
+  border1: "#3c3836",
+  border2: "#2a2826",
   border3: "#fabd2f",
 };
 
@@ -228,8 +228,8 @@ const tokyoNightColors: ThemeColors = {
   fg3: "#787c99",
   fg4: "#565f89",
   fg5: "#444b6a",
-  border1: "rgba(169, 177, 214, 0.1)",
-  border2: "rgba(169, 177, 214, 0.06)",
+  border1: "#2a2e42",
+  border2: "#1f2233",
   border3: "#7aa2f7",
 };
 
@@ -257,8 +257,8 @@ const oneDarkColors: ThemeColors = {
   fg3: "#7f848e",
   fg4: "#636d83",
   fg5: "#4b5263",
-  border1: "rgba(171, 178, 191, 0.12)",
-  border2: "rgba(171, 178, 191, 0.06)",
+  border1: "#3a3f4b",
+  border2: "#2c313a",
   border3: "#61afef",
 };
 
@@ -286,8 +286,8 @@ const cyberpunkColors: ThemeColors = {
   fg3: "#9999aa",
   fg4: "#777788",
   fg5: "#555566",
-  border1: "rgba(255, 0, 255, 0.2)",
-  border2: "rgba(255, 0, 255, 0.1)",
+  border1: "#2a1a2a",
+  border2: "#1a0f1a",
   border3: "#ff00ff",
 };
 
@@ -315,8 +315,8 @@ const ayuDarkColors: ThemeColors = {
   fg3: "#8a8680",
   fg4: "#6f6b66",
   fg5: "#54504a",
-  border1: "rgba(89, 194, 255, 0.12)",
-  border2: "rgba(89, 194, 255, 0.06)",
+  border1: "#253340",
+  border2: "#1a2530",
   border3: "#59c2ff",
 };
 
@@ -344,8 +344,8 @@ const palenightColors: ThemeColors = {
   fg3: "#9ccc65",
   fg4: "#80deea",
   fg5: "#546e7a",
-  border1: "rgba(130, 177, 255, 0.12)",
-  border2: "rgba(130, 177, 255, 0.06)",
+  border1: "#414863",
+  border2: "#343b50",
   border3: "#82b1ff",
 };
 
@@ -373,8 +373,8 @@ const synthwaveColors: ThemeColors = {
   fg3: "#a0a0a0",
   fg4: "#707070",
   fg5: "#404040",
-  border1: "rgba(255, 0, 110, 0.15)",
-  border2: "rgba(255, 0, 110, 0.08)",
+  border1: "#2a1030",
+  border2: "#1a0820",
   border3: "#ff006e",
 };
 
@@ -402,8 +402,8 @@ const oneLightColors: ThemeColors = {
   fg3: "#696c77",
   fg4: "#898d96",
   fg5: "#a0a1a7",
-  border1: "rgba(56, 58, 66, 0.12)",
-  border2: "rgba(56, 58, 66, 0.06)",
+  border1: "#d4d4d4",
+  border2: "#e5e5e5",
   border3: "#0184bc",
 };
 
@@ -431,8 +431,8 @@ const githubDarkColors: ThemeColors = {
   fg3: "#8b949e",
   fg4: "#6e7681",
   fg5: "#484f58",
-  border1: "rgba(88, 166, 255, 0.12)",
-  border2: "rgba(88, 166, 255, 0.06)",
+  border1: "#2a3545",
+  border2: "#1e2835",
   border3: "#58a6ff",
 };
 
@@ -460,8 +460,8 @@ const everforestColors: ThemeColors = {
   fg3: "#9da9a0",
   fg4: "#7f8a87",
   fg5: "#646d6a",
-  border1: "rgba(131, 192, 146, 0.12)",
-  border2: "rgba(131, 192, 146, 0.06)",
+  border1: "#445550",
+  border2: "#374540",
   border3: "#83c092",
 };
 
@@ -489,8 +489,8 @@ const rosePineColors: ThemeColors = {
   fg3: "#9893a5",
   fg4: "#6e6a86",
   fg5: "#555169",
-  border1: "rgba(235, 111, 146, 0.12)",
-  border2: "rgba(235, 111, 146, 0.06)",
+  border1: "#3a2840",
+  border2: "#2a1e30",
   border3: "#eb6f92",
 };
 
@@ -518,8 +518,8 @@ const tokyostationColors: ThemeColors = {
   fg3: "#bdae93",
   fg4: "#a89984",
   fg5: "#928374",
-  border1: "rgba(142, 192, 124, 0.12)",
-  border2: "rgba(142, 192, 124, 0.06)",
+  border1: "#3c4035",
+  border2: "#2e322a",
   border3: "#8ec07c",
 };
 
@@ -547,8 +547,8 @@ const kanagawaColors: ThemeColors = {
   fg3: "#8a8980",
   fg4: "#727169",
   fg5: "#5a5a52",
-  border1: "rgba(122, 168, 159, 0.12)",
-  border2: "rgba(122, 168, 159, 0.06)",
+  border1: "#3a4550",
+  border2: "#2a3540",
   border3: "#7aa89f",
 };
 
@@ -576,8 +576,8 @@ const oxocarbonColors: ThemeColors = {
   fg3: "#c6c6c6",
   fg4: "#a8a8a8",
   fg5: "#8d8d8d",
-  border1: "rgba(15, 98, 254, 0.12)",
-  border2: "rgba(15, 98, 254, 0.06)",
+  border1: "#2a3545",
+  border2: "#1e2535",
   border3: "#0f62fe",
 };
 

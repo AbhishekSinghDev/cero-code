@@ -1,5 +1,9 @@
 import { ChatService } from "@core/chat/chat.service";
-import type { ConversationsResponse, MessagesResponse } from "../../types/tui.type";
+import type {
+  ConversationsResponse,
+  MessagesResponse,
+  SupportedAIModelId,
+} from "../../types/tui.type";
 
 const chatService = new ChatService();
 
@@ -17,9 +21,10 @@ export async function fetchConversationMessages(
 export async function sendChatMessage(
   content: string,
   token: string,
+  aiModel: SupportedAIModelId,
   conversationId: string | undefined,
   onToken: (tokenText: string) => void,
   onInit: (conversationId: string) => void
 ) {
-  return await chatService.run(content, token, conversationId, onToken, onInit);
+  return await chatService.run(content, token, aiModel, conversationId, onToken, onInit);
 }

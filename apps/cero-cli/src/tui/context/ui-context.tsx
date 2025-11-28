@@ -1,35 +1,13 @@
+import { DEFAULT_AI_MODEL_ID } from "@cerocode/constants";
 import { useTerminalDimensions } from "@opentui/react";
 import { createContext, type ReactNode, useCallback, useMemo, useState } from "react";
 import type {
-  AIModel,
   FocusMode,
   LayoutDimensions,
+  SupportedAIModelId,
   UIContextValue,
   UIState,
 } from "../../types/tui.type";
-
-export const AI_MODELS: AIModel[] = [
-  { id: "gpt-4o", name: "GPT-4o", description: "Most capable", provider: "OpenAI" },
-  {
-    id: "gpt-4o-mini",
-    name: "GPT-4o Mini",
-    description: "Fast & efficient",
-    provider: "OpenAI",
-  },
-  {
-    id: "claude-4-sonnet",
-    name: "Claude 4 Sonnet",
-    description: "Balanced",
-    provider: "Anthropic",
-  },
-  {
-    id: "claude-4-opus",
-    name: "Claude 4 Opus",
-    description: "Most intelligent",
-    provider: "Anthropic",
-  },
-  { id: "gemini-3", name: "Gemini 3", description: "Multimodal", provider: "Google" },
-];
 
 export const UIContext = createContext<UIContextValue | null>(null);
 
@@ -50,7 +28,7 @@ export function UIProvider({
     sidebarCollapsed: false,
     focusedChatIndex: -1,
     inputFocused: true,
-    selectedModel: "gpt-4o",
+    selectedModel: DEFAULT_AI_MODEL_ID,
     modelSelectorOpen: false,
     focusMode: "chat",
   });
@@ -74,7 +52,7 @@ export function UIProvider({
     setState((prev) => ({ ...prev, modelSelectorOpen: !prev.modelSelectorOpen }));
   }, []);
 
-  const setSelectedModel = useCallback((modelId: string) => {
+  const setSelectedModel = useCallback((modelId: SupportedAIModelId) => {
     setState((prev) => ({ ...prev, selectedModel: modelId, modelSelectorOpen: false }));
   }, []);
 

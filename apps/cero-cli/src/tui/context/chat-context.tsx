@@ -5,6 +5,7 @@ import type {
   ChatContextValue,
   ChatState,
   Conversation,
+  SupportedAIModelId,
 } from "../../types/tui.type";
 import { fetchConversationMessages, sendChatMessage } from "../actions/conversations";
 import { useAuth } from "../hooks/use-auth";
@@ -91,7 +92,10 @@ export function ChatProvider({ children, onNewConversation }: ChatProviderProps)
   }, []);
 
   const sendMessage = useCallback(
-    async (content: string): Promise<{ conversationId: string | null }> => {
+    async (
+      content: string,
+      aiModel: SupportedAIModelId
+    ): Promise<{ conversationId: string | null }> => {
       if (!content.trim() || !isAuthenticated) {
         return { conversationId: activeConversationRef.current };
       }
@@ -131,6 +135,7 @@ export function ChatProvider({ children, onNewConversation }: ChatProviderProps)
         const result = await sendChatMessage(
           content,
           token,
+          aiModel,
           conversationId ?? undefined,
           // On token received
           (tokenText) => {

@@ -1,5 +1,5 @@
+import { SUPPORTED_AI_MODELS } from "@cerocode/constants";
 import { useKeyboard } from "@opentui/react";
-import { AI_MODELS } from "@tui/context/ui-context";
 import { useChat } from "@tui/hooks/use-chat";
 import { useConversations } from "@tui/hooks/use-conversations";
 import { useTheme } from "@tui/hooks/use-theme";
@@ -12,7 +12,6 @@ export function KeyboardHandler() {
     focusMode,
     sidebarCollapsed,
     focusedChatIndex,
-    toggleModelSelector,
     toggleSidebar,
     setSelectedModel,
     focusChat,
@@ -26,6 +25,11 @@ export function KeyboardHandler() {
   const { nextTheme } = useTheme();
 
   useKeyboard((key) => {
+    // If model selector is open, let it handle its own keyboard events
+    if (modelSelectorOpen) {
+      return;
+    }
+
     // Theme cycling - Ctrl+T (or Cmd+T on macOS)
     if (key.name === "t" && (key.ctrl || key.meta)) {
       nextTheme();
@@ -34,10 +38,6 @@ export function KeyboardHandler() {
 
     // Escape - close model selector or exit
     if (key.name === "escape") {
-      if (modelSelectorOpen) {
-        toggleModelSelector();
-        return;
-      }
       process.exit(0);
     }
 
@@ -54,16 +54,10 @@ export function KeyboardHandler() {
       return;
     }
 
-    // Toggle model selector
-    if (key.name === "m" && inputFocused) {
-      toggleModelSelector();
-      return;
-    }
-
-    // Model selection by number
+    // Model selection by number (only when model selector is open)
     if (modelSelectorOpen && key.name && /^[1-5]$/.test(key.name)) {
       const idx = Number.parseInt(key.name, 10) - 1;
-      const model = AI_MODELS[idx];
+      const model = SUPPORTED_AI_MODELS[idx];
       if (model) {
         setSelectedModel(model.id);
       }

@@ -1,62 +1,48 @@
+import { DEFAULT_AI_MODEL_ID, SUPPORTED_AI_MODELS } from "@cerocode/constants";
 import { useChat } from "@tui/hooks/use-chat";
 import { useTheme } from "@tui/hooks/use-theme";
 import { useUI } from "@tui/hooks/use-ui";
-import { AI_MODELS } from "../context/ui-context";
-
-function ModelSelector() {
-  const { selectedModel } = useUI();
-  const { colors } = useTheme();
-
-  return (
-    <box
-      style={{
-        flexDirection: "column",
-        backgroundColor: colors.bg2,
-        border: true,
-        borderStyle: "rounded",
-        borderColor: colors.border1,
-        marginLeft: 1,
-        marginRight: 1,
-      }}
-    >
-      <box style={{ paddingLeft: 1 }}>
-        <text fg={colors.fg4}>Select Model (1-5):</text>
-      </box>
-      {AI_MODELS.map((model, idx) => {
-        const isSelected = model.id === selectedModel;
-        return (
-          <box key={model.id} style={{ paddingLeft: 1, flexDirection: "row" }}>
-            <text fg={colors.fg5}>{idx + 1}. </text>
-            <text fg={isSelected ? colors.primary : colors.fg3}>
-              {isSelected ? "● " : "○ "}
-            </text>
-            <text fg={isSelected ? colors.primary : colors.fg1}>{model.name}</text>
-            <text fg={colors.fg5}> [{model.provider}]</text>
-          </box>
-        );
-      })}
-    </box>
-  );
-}
+import { useCallback } from "react";
+import { ModelSelector } from "./model-selector";
 
 export function ChatInput() {
-  const { selectedModel, modelSelectorOpen, inputFocused, isInputDisabled } = useUI();
+  const {
+    selectedModel,
+    modelSelectorOpen,
+    inputFocused,
+    isInputDisabled,
+    toggleModelSelector,
+  } = useUI();
   const { sendMessage } = useChat();
   const { colors } = useTheme();
 
-  const currentModel = AI_MODELS.find((m) => m.id === selectedModel) ?? AI_MODELS[0];
+  const currentModel =
+    SUPPORTED_AI_MODELS.find((m) => m.id === selectedModel) ??
+    SUPPORTED_AI_MODELS.find((m) => m.id === DEFAULT_AI_MODEL_ID);
 
-  const handleSubmit = (value: string) => {
-    if (!isInputDisabled && value.trim()) {
-      sendMessage(value);
-    }
-  };
+  const handleSubmit = useCallback(
+    (value: string) => {
+      const trimmed = value.trim().toLowerCase();
+
+      // Check for /m command to open model selector
+      if (trimmed === "/m") {
+        toggleModelSelector();
+        return;
+      }
+
+      if (!isInputDisabled && value.trim()) {
+        sendMessage(value, selectedModel);
+      }
+    },
+    [isInputDisabled, sendMessage, selectedModel, toggleModelSelector]
+  );
 
   return (
     <box
       style={{
         flexDirection: "column",
         backgroundColor: colors.bg2,
+        flexShrink: 0,
       }}
     >
       {/* Model selector dropdown */}
@@ -67,7 +53,9 @@ export function ChatInput() {
         <text fg={colors.fg5}>⚡</text>
         <text fg={colors.primary}> {currentModel?.name}</text>
         <text fg={colors.border1}> • </text>
-        <text fg={colors.fg5}>[m] change model</text>
+        <text fg={colors.fg5}>type </text>
+        <text fg={colors.accent}>/m</text>
+        <text fg={colors.fg5}> + Enter to change model</text>
         {isInputDisabled && (
           <>
             <text fg={colors.border1}> • </text>
@@ -79,7 +67,7 @@ export function ChatInput() {
       {/* Input field */}
       <box
         style={{
-          height: 3,
+          minHeight: 3,
           marginLeft: 1,
           marginRight: 1,
           marginBottom: 1,
@@ -96,9 +84,11 @@ export function ChatInput() {
       >
         <input
           placeholder={
-            isInputDisabled ? "Waiting for response..." : "Type a message… (Enter to send)"
+            isInputDisabled
+              ? "Waiting for response..."
+              : "Type a message… (Enter to send, /m for models)"
           }
-          focused={inputFocused && !isInputDisabled}
+          focused={inputFocused && !isInputDisabled && !modelSelectorOpen}
           onSubmit={handleSubmit}
         />
       </box>

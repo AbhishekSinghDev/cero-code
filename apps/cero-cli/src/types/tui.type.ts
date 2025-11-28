@@ -1,3 +1,4 @@
+import type { SUPPORTED_AI_MODELS } from "@cerocode/constants";
 import type { User } from "./user.type";
 
 export interface Command {
@@ -8,11 +9,13 @@ export interface Command {
 
 export type FocusMode = "sidebar" | "chat";
 
+export type SupportedAIModelId = (typeof SUPPORTED_AI_MODELS)[number]["id"];
+
 export interface UIState {
   sidebarCollapsed: boolean;
   focusedChatIndex: number;
   inputFocused: boolean;
-  selectedModel: string;
+  selectedModel: SupportedAIModelId;
   modelSelectorOpen: boolean;
   focusMode: FocusMode;
 }
@@ -42,7 +45,7 @@ export interface ThemeContextValue {
 export interface UIActions {
   toggleSidebar: () => void;
   toggleModelSelector: () => void;
-  setSelectedModel: (modelId: string) => void;
+  setSelectedModel: (modelId: SupportedAIModelId) => void;
   setFocusMode: (mode: FocusMode) => void;
   setInputFocused: (focused: boolean) => void;
   setFocusedChatIndex: (index: number | ((prev: number) => number)) => void;
@@ -87,7 +90,10 @@ export interface ChatContextValue {
   // Actions
   openChat: (conversation: Conversation) => Promise<void>;
   startNewChat: () => void;
-  sendMessage: (content: string) => Promise<{ conversationId: string | null }>;
+  sendMessage: (
+    content: string,
+    aiModel: SupportedAIModelId
+  ) => Promise<{ conversationId: string | null }>;
   clearError: () => void;
 }
 

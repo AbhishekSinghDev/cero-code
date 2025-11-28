@@ -1,5 +1,6 @@
 import { ConfigService } from "@core/config/config.service";
 import { tryCatch } from "@utils/error-handler.util";
+import type { SupportedAIModelId } from "types/tui.type";
 
 export interface ChatResponse {
   fullMessage: string;
@@ -12,6 +13,7 @@ export class ChatService {
   async run(
     message: string,
     authToken: string,
+    aiModel: SupportedAIModelId,
     conversationId?: string,
     onToken?: (token: string) => void,
     onInit?: (conversationId: string) => void
@@ -25,7 +27,7 @@ export class ChatService {
           "Content-Type": "application/json",
           Authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify({ message, conversationId }),
+        body: JSON.stringify({ message, conversationId, aiModel }),
       })
     );
 

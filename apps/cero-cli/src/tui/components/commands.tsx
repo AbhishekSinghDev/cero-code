@@ -1,4 +1,5 @@
 import { useTheme } from "@tui/hooks/use-theme";
+import { useUI } from "@tui/hooks/use-ui";
 import type { Command } from "types/tui.type";
 
 export const COMMANDS: Command[] = [
@@ -8,8 +9,7 @@ export const COMMANDS: Command[] = [
   { key: "b", description: "Toggle sidebar", context: "sidebar" },
   { key: "↑↓", description: "Navigate history", context: "sidebar" },
   { key: "Enter", description: "Select chat", context: "sidebar" },
-  { key: "m", description: "Change model", context: "chat" },
-  { key: "1-5", description: "Quick select model", context: "chat" },
+  { key: "/m", description: "Change model", context: "chat" },
   { key: "Esc", description: "Exit / Close", context: "global" },
 ];
 
@@ -20,21 +20,33 @@ interface CommandsDisplayProps {
 
 export function CommandsDisplay({ showFull = false, compact = false }: CommandsDisplayProps) {
   const { colors } = useTheme();
+  const { modelSelectorOpen } = useUI();
+
+  if (modelSelectorOpen) return null;
 
   if (compact) {
     return (
-      <box style={{ flexDirection: "column", paddingLeft: 1, height: 3 }}>
-        <text fg={colors.fg4}>─── Keys ───</text>
+      <box
+        style={{
+          flexDirection: "column",
+          paddingLeft: 1,
+          height: 5,
+          border: true,
+          borderColor: colors.border3,
+          borderStyle: "rounded",
+        }}
+      >
+        <text fg={colors.fg4}>Keys</text>
         <box style={{ flexDirection: "row" }}>
-          <text fg={colors.fg5}>[n]</text>
+          <text fg={colors.accent}>[n]</text>
           <text fg={colors.fg4}> new </text>
-          <text fg={colors.fg5}>[b]</text>
+          <text fg={colors.accent}>[b]</text>
           <text fg={colors.fg4}> sidebar</text>
         </box>
         <box style={{ flexDirection: "row" }}>
-          <text fg={colors.fg5}>[↑↓]</text>
+          <text fg={colors.accent}>[↑↓]</text>
           <text fg={colors.fg4}> nav </text>
-          <text fg={colors.fg5}>[↵]</text>
+          <text fg={colors.accent}>[↵]</text>
           <text fg={colors.fg4}> select</text>
         </box>
       </box>
@@ -57,12 +69,12 @@ export function CommandsDisplay({ showFull = false, compact = false }: CommandsD
           <text fg={colors.primary}>
             <strong>CEROCODE</strong>
           </text>
-          <text fg={colors.fg5}>Agentic CLI</text>
+          <text fg={colors.fg4}>Agentic CLI</text>
         </box>
 
         {/* Welcome message */}
         <box style={{ marginBottom: 1 }}>
-          <text fg={colors.fg4}>Welcome! Start typing or use these commands:</text>
+          <text fg={colors.fg3}>Start a conversation or use keyboard shortcuts below</text>
         </box>
 
         {/* Commands box */}
@@ -71,101 +83,131 @@ export function CommandsDisplay({ showFull = false, compact = false }: CommandsD
             flexDirection: "column",
             border: true,
             borderStyle: "rounded",
-            borderColor: colors.border1,
-            paddingLeft: 2,
-            paddingRight: 2,
+            borderColor: colors.border2,
+            paddingLeft: 3,
+            paddingRight: 3,
             paddingTop: 1,
             paddingBottom: 1,
-            backgroundColor: colors.bg2,
-            width: 50,
+            width: 56,
           }}
         >
-          <text fg={colors.primary} style={{ marginBottom: 1 }}>
-            <strong>⌨ Keyboard Shortcuts</strong>
-          </text>
+          {/* Header */}
+          <box style={{ flexDirection: "row", marginBottom: 1 }}>
+            <text fg={colors.primary}>⌨ </text>
+            <text fg={colors.fg1}>
+              <strong>Keyboard Shortcuts</strong>
+            </text>
+          </box>
 
-          {/* Global */}
-          <text fg={colors.border2} style={{ marginBottom: 1 }}>
-            ─ Global ─
-          </text>
-          <box style={{ flexDirection: "column", marginBottom: 1, paddingLeft: 1 }}>
-            <box style={{ flexDirection: "row", marginBottom: 1 }}>
-              <text fg={colors.primary} style={{ width: 10 }}>
-                <strong>n</strong>
+          {/* Divider */}
+          <text fg={colors.border1}>────────────────────────────────────────────────</text>
+
+          {/* Global Section */}
+          <box style={{ marginTop: 1, marginBottom: 1 }}>
+            <text fg={colors.accent}>
+              <strong>● Global</strong>
+            </text>
+          </box>
+          <box style={{ flexDirection: "column", paddingLeft: 2 }}>
+            <box style={{ flexDirection: "row" }}>
+              <text fg={colors.primary} style={{ width: 12 }}>
+                n
               </text>
-              <text fg={colors.fg2}>New chat</text>
-            </box>
-            <box style={{ flexDirection: "row", marginBottom: 1 }}>
-              <text fg={colors.primary} style={{ width: 10 }}>
-                <strong>Tab</strong>
-              </text>
-              <text fg={colors.fg2}>Switch focus</text>
-            </box>
-            <box style={{ flexDirection: "row", marginBottom: 1 }}>
-              <text fg={colors.primary} style={{ width: 10 }}>
-                <strong>Ctrl+T</strong>
-              </text>
-              <text fg={colors.fg2}>Change theme</text>
+              <text fg={colors.fg3}>→</text>
+              <text fg={colors.fg2}> Start new chat</text>
             </box>
             <box style={{ flexDirection: "row" }}>
-              <text fg={colors.primary} style={{ width: 10 }}>
-                <strong>Esc</strong>
+              <text fg={colors.primary} style={{ width: 12 }}>
+                Tab
               </text>
-              <text fg={colors.fg2}>Exit / Close</text>
+              <text fg={colors.fg3}>→</text>
+              <text fg={colors.fg2}> Switch between sidebar & chat</text>
+            </box>
+            <box style={{ flexDirection: "row" }}>
+              <text fg={colors.primary} style={{ width: 12 }}>
+                Ctrl+T
+              </text>
+              <text fg={colors.fg3}>→</text>
+              <text fg={colors.fg2}> Cycle through themes</text>
+            </box>
+            <box style={{ flexDirection: "row" }}>
+              <text fg={colors.primary} style={{ width: 12 }}>
+                Esc
+              </text>
+              <text fg={colors.fg3}>→</text>
+              <text fg={colors.fg2}> Exit application</text>
             </box>
           </box>
 
-          {/* Sidebar */}
-          <text fg={colors.border2} style={{ marginBottom: 1 }}>
-            ─ Sidebar ─
-          </text>
-          <box style={{ flexDirection: "column", marginBottom: 1, paddingLeft: 1 }}>
-            <box style={{ flexDirection: "row", marginBottom: 1 }}>
-              <text fg={colors.primary} style={{ width: 10 }}>
-                <strong>b</strong>
+          {/* Sidebar Section */}
+          <box style={{ marginTop: 1, marginBottom: 1 }}>
+            <text fg={colors.accent}>
+              <strong>● Sidebar</strong>
+            </text>
+          </box>
+          <box style={{ flexDirection: "column", paddingLeft: 2 }}>
+            <box style={{ flexDirection: "row" }}>
+              <text fg={colors.primary} style={{ width: 12 }}>
+                b
               </text>
-              <text fg={colors.fg2}>Toggle sidebar</text>
-            </box>
-            <box style={{ flexDirection: "row", marginBottom: 1 }}>
-              <text fg={colors.primary} style={{ width: 10 }}>
-                <strong>↑↓ j/k</strong>
-              </text>
-              <text fg={colors.fg2}>Navigate history</text>
+              <text fg={colors.fg3}>→</text>
+              <text fg={colors.fg2}> Toggle sidebar visibility</text>
             </box>
             <box style={{ flexDirection: "row" }}>
-              <text fg={colors.primary} style={{ width: 10 }}>
-                <strong>Enter</strong>
+              <text fg={colors.primary} style={{ width: 12 }}>
+                ↑ ↓ / j k
               </text>
-              <text fg={colors.fg2}>Select chat</text>
+              <text fg={colors.fg3}>→</text>
+              <text fg={colors.fg2}> Navigate chat history</text>
+            </box>
+            <box style={{ flexDirection: "row" }}>
+              <text fg={colors.primary} style={{ width: 12 }}>
+                Enter
+              </text>
+              <text fg={colors.fg3}>→</text>
+              <text fg={colors.fg2}> Open selected chat</text>
             </box>
           </box>
 
-          {/* Chat */}
-          <text fg={colors.border2} style={{ marginBottom: 1 }}>
-            ─ Chat ─
-          </text>
-          <box style={{ flexDirection: "column", paddingLeft: 1 }}>
-            <box style={{ flexDirection: "row", marginBottom: 1 }}>
-              <text fg={colors.primary} style={{ width: 10 }}>
-                <strong>m</strong>
+          {/* Chat Section */}
+          <box style={{ marginTop: 1, marginBottom: 1 }}>
+            <text fg={colors.accent}>
+              <strong>● Chat Input</strong>
+            </text>
+          </box>
+          <box style={{ flexDirection: "column", paddingLeft: 2 }}>
+            <box style={{ flexDirection: "row" }}>
+              <text fg={colors.primary} style={{ width: 12 }}>
+                /m + Enter
               </text>
-              <text fg={colors.fg2}>Change AI model</text>
+              <text fg={colors.fg3}>→</text>
+              <text fg={colors.fg2}> Open model selector</text>
             </box>
             <box style={{ flexDirection: "row" }}>
-              <text fg={colors.primary} style={{ width: 10 }}>
-                <strong>1-5</strong>
+              <text fg={colors.primary} style={{ width: 12 }}>
+                Enter
               </text>
-              <text fg={colors.fg2}>Quick model select</text>
+              <text fg={colors.fg3}>→</text>
+              <text fg={colors.fg2}> Send message</text>
             </box>
           </box>
         </box>
 
+        {/* Footer hint */}
         <box style={{ marginTop: 1, flexDirection: "row" }}>
           <text fg={colors.fg4}>Press </text>
           <text fg={colors.primary}>
-            <strong>[n]</strong>
+            <strong>n</strong>
           </text>
-          <text fg={colors.fg4}> to start a new chat</text>
+          <text fg={colors.fg4}>
+            {" "}
+            to start chatting or select a conversation from the sidebar
+          </text>
+        </box>
+
+        {/* Version info */}
+        <box style={{ marginTop: 1 }}>
+          <text fg={colors.fg5}>v0.1.0 • github.com/cerocode</text>
         </box>
       </box>
     );

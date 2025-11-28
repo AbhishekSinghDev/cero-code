@@ -82,7 +82,7 @@ export function ChatList() {
         rootOptions: { backgroundColor: colors.bg2 },
         wrapperOptions: { backgroundColor: colors.bg2 },
         viewportOptions: { backgroundColor: colors.bg2 },
-        contentOptions: { backgroundColor: colors.bg2, gap: 1 },
+        contentOptions: { backgroundColor: colors.bg2, paddingTop: 1, paddingBottom: 1 },
         scrollbarOptions: {
           showArrows: false,
           trackOptions: {
@@ -97,45 +97,48 @@ export function ChatList() {
         const isFocused = idx === focusedChatIndex;
         const relativeTime = formatRelativeTime(conv.updatedAt);
         // Calculate max title length based on sidebar width (account for padding, indicator, timestamp)
-        const maxTitleLength = Math.max(8, layout.sidebarWidth - 14);
+        const maxTitleLength = Math.max(8, layout.sidebarWidth - 12);
         const displayTitle = truncateText(conv.shortTitle || "New Chat", maxTitleLength);
+
+        // Determine colors based on state
+        const itemBg = isSelected ? colors.bg4 : isFocused ? colors.bg3 : "transparent";
+        const titleColor = isSelected ? colors.primary : isFocused ? colors.fg1 : colors.fg2;
+        const indicatorColor = isSelected
+          ? colors.primary
+          : isFocused
+            ? colors.secondary
+            : colors.fg4;
+        const timeColor = isSelected
+          ? colors.primaryMuted
+          : isFocused
+            ? colors.fg4
+            : colors.fg5;
 
         return (
           <box
             key={conv.id}
             style={{
+              marginRight: 1,
               paddingRight: 1,
-              height: 1,
-              backgroundColor: isSelected
-                ? colors.bg4
-                : isFocused
-                  ? colors.bg3
-                  : "transparent",
-              borderColor: isSelected
-                ? colors.primary
-                : isFocused
-                  ? colors.secondary
-                  : "transparent",
-              borderStyle: "rounded",
-              border: isSelected || isFocused,
+              minHeight: 1,
+              backgroundColor: itemBg,
             }}
           >
-            <box style={{ flexDirection: "row", width: "100%" }}>
-              <text
-                fg={isSelected ? colors.primary : isFocused ? colors.secondary : colors.fg2}
-              >
-                {isSelected ? "● " : isFocused ? "› " : "  "}
+            <box style={{ flexDirection: "row", width: "100%", alignItems: "center" }}>
+              {/* Indicator */}
+              <text fg={indicatorColor}>{isSelected ? "●" : isFocused ? "›" : " "}</text>
+              <text> </text>
+
+              {/* Title */}
+              <text fg={titleColor}>
+                {isSelected || isFocused ? <strong>{displayTitle}</strong> : displayTitle}
               </text>
-              <box style={{ flexDirection: "row", width: "100%" }}>
-                <text fg={isSelected ? colors.primary : colors.fg1}>
-                  {displayTitle.at(0)?.toUpperCase()}
-                </text>
-                <text fg={isSelected ? colors.primary : colors.fg1}>
-                  {displayTitle.slice(1)}
-                </text>
-              </box>
+
+              {/* Spacer */}
               <box style={{ flexGrow: 1 }} />
-              <text fg={colors.fg5}>{relativeTime}</text>
+
+              {/* Timestamp */}
+              <text fg={timeColor}>{relativeTime}</text>
             </box>
           </box>
         );
