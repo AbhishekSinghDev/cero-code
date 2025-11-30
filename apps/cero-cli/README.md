@@ -15,7 +15,7 @@
 
 ## What is this?
 
-Cero is a CLI tool that brings AI chat capabilities directly to your terminal. No API keys to manage, no configuration files to mess with—just install, authenticate once, and start chatting.
+Cero is a CLI tool that brings AI chat capabilities directly to your terminal. No API keys to manage, no configuration files to mess with, just install, authenticate once, and start chatting.
 
 ## Installation
 
@@ -23,7 +23,7 @@ Cero is a CLI tool that brings AI chat capabilities directly to your terminal. N
 npm install -g cerocode
 ```
 
-Or if you're using bun:
+Or with bun:
 
 ```bash
 bun add -g cerocode
@@ -32,201 +32,151 @@ bun add -g cerocode
 ## Quick Start
 
 ```bash
-# First time setup - authenticate via browser
+# Authenticate via browser (one-time)
 cero login
 
-# Start chatting (quick mode)
+# Quick chat
 cero chat "explain what DNS is"
 
-# Launch interactive terminal UI
+# Launch interactive TUI
 cero interactive
 
-# When you're done
+# Logout
 cero logout
 ```
-
-That's it. No environment variables, no config files, nothing.
 
 ## Usage
 
 ### Authentication
 
-Cero uses device authorization (the same flow Netflix uses for TV login). You authenticate once in your browser, and the CLI handles the rest.
+Device authorization flow (like Netflix TV login). Authenticate once in your browser, credentials stored securely in your system keychain.
 
 ```bash
 cero login
 ```
 
-This will:
-
-1. Generate a unique code
-2. Open your browser to the authorization page
-3. Wait for you to approve the request
-4. Store your credentials securely in your system keychain
-
-Your tokens are stored using your OS's native credential manager (Keychain on macOS, Credential Manager on Windows, libsecret on Linux).
-
 ### Quick Chat
-
-For quick one-off questions:
 
 ```bash
 cero chat "your message here"
 ```
 
-The response streams back in real-time, just like ChatGPT.
+Responses stream back in real-time.
 
 ### Interactive Mode
-
-For a full chat experience with conversation history:
 
 ```bash
 cero interactive
 ```
 
-This launches a beautiful terminal UI with:
+Full-featured terminal UI with:
 
-- **Chat area** with real-time streaming responses
-- **Sidebar** showing your conversation history
-- **Keyboard shortcuts** for efficient navigation
-- **User info** display
-- **20+ Themes** — Customize your terminal experience with themes like Matrix, Dracula, Nord, Tokyo Night, Catppuccin, and more
+- **Chat area** — Real-time streaming with markdown rendering
+- **Syntax highlighting** — Code blocks with language detection
+- **Sidebar** — Conversation history navigation
+- **Model selector** — Choose your AI model
+- **Tool selector** — Enable/disable AI tools
+- **20+ themes** — Cycle through with keyboard shortcuts
+
 
 #### Available Themes
 
-Choose from 20 carefully crafted themes to match your style:
+20 carefully crafted themes:
 
-1. **Matrix** — Classic green-on-black hacker aesthetic
-2. **Dracula** — Popular dark theme with vibrant colors
-3. **Nord** — Arctic, north-bluish color palette
-4. **Monokai Pro** — Professional dark theme
-5. **Catppuccin** — Soothing pastel colors
-6. **Solarized Dark** — Precision colors for machines and people
-7. **Gruvbox** — Retro groove color scheme
-8. **Tokyo Night** — Modern Japanese-inspired theme
-9. **One Dark Pro** — Popular Atom editor theme
-10. **Cyberpunk** — Neon-fueled dystopian vibes
-11. **Ayu Dark** — Subtle and elegant theme
-12. **Palenight** — Material Design inspired
-13. **Synthwave** — 80s synthwave aesthetic
-14. **One Light** — Light theme alternative
-15. **GitHub Dark** — GitHub's native dark theme
-16. **Everforest** — Green-focused natural theme
-17. **Rosé Pine** — Warm aesthetic color palette
-18. **Tokyo Station** — Gruvbox-inspired with Japanese flair
-19. **Kanagawa** — Japanese-inspired with warm colors
-20. **Oxocarbon** — IBM Carbon design system colors
-
-Cycle through themes in interactive mode using keyboard shortcuts!
-
-### Logging Out
-
-```bash
-cero logout
-```
-
-This clears your stored credentials from the keychain.
+| Theme | Description |
+|-------|-------------|
+| Matrix | Classic green-on-black hacker aesthetic |
+| Dracula | Popular dark theme with vibrant colors |
+| Nord | Arctic, north-bluish palette |
+| Monokai Pro | Professional dark theme |
+| Catppuccin | Soothing pastel colors |
+| Solarized Dark | Precision colors for machines and people |
+| Gruvbox | Retro groove color scheme |
+| Tokyo Night | Modern Japanese-inspired |
+| One Dark Pro | Atom editor classic |
+| Cyberpunk | Neon-fueled dystopian vibes |
+| Ayu Dark | Subtle and elegant |
+| Palenight | Material Design inspired |
+| Synthwave | 80s synthwave aesthetic |
+| One Light | Light theme alternative |
+| GitHub Dark | GitHub's native dark |
+| Everforest | Green-focused natural |
+| Rosé Pine | Warm aesthetic palette |
+| Tokyo Station | Gruvbox with Japanese flair |
+| Kanagawa | Japanese-inspired warm colors |
+| Oxocarbon | IBM Carbon design system |
 
 ## Commands
 
-| Command               | Alias | Description                                |
-| --------------------- | ----- | ------------------------------------------ |
-| `cero login`          |       | Authenticate via device authorization flow |
-| `cero chat <message>` | `c`   | Send a message and get an AI response      |
-| `cero interactive`    | `i`   | Launch interactive terminal UI             |
-| `cero logout`         |       | Clear stored credentials                   |
-| `cero --help`         | `-h`  | Show help information                      |
-| `cero --version`      | `-v`  | Display version number                     |
+| Command | Alias | Description |
+|---------|-------|-------------|
+| `cero login` | | Authenticate via device flow |
+| `cero chat <message>` | `c` | Quick chat with AI |
+| `cero interactive` | `i` | Launch interactive TUI |
+| `cero logout` | | Clear stored credentials |
+| `cero --help` | `-h` | Show help |
+| `cero --version` | `-v` | Show version |
 
 ## How it Works
 
-Cero uses OAuth 2.0 Device Authorization Grant for authentication. Here's the flow:
+### Auth Flow
 
-1. You run `cero login`
-2. CLI requests a device code from the server
-3. You approve the request in your browser
-4. CLI polls the server until you approve
-5. Tokens are stored securely in your system keychain
-6. Future commands use these tokens automatically
+1. Run `cero login`
+2. CLI requests device code from server
+3. Approve in browser
+4. Tokens stored in OS keychain (Keychain/Credential Manager/libsecret)
 
 ### Chat Flow
 
-1. You send a message via `cero chat` or interactive mode
-2. CLI sends authenticated request to the API
-3. API triggers background job for AI processing
-4. Response streams back token-by-token via Server-Sent Events
-5. Tokens are rendered in real-time as they arrive
+1. Send message via `cero chat` or interactive mode
+2. Authenticated request to API
+3. AI processes via background job
+4. Response streams back via SSE
+5. Rendered in real-time with markdown support
 
 ## Features
 
-### Currently Available
+### Live
 
-- **AI Chat** — Ask questions, get answers, right in your terminal
-- **Interactive Terminal UI** — Full chat interface with sidebar and conversation history
-- **Streaming Responses** — Real-time responses as they're generated
-- **Conversation History** — Browse and continue past conversations
-- **Secure Auth** — OAuth 2.0 device flow, no API keys to manage
-- **Encrypted Storage** — Credentials stored in OS keychain
-- **Cross-Platform** — Works on macOS, Windows, and Linux
-- **20+ Themes** — Choose from a variety of beautiful themes to customize your terminal experience
+- **AI Chat** — Streaming responses in your terminal
+- **Interactive TUI** — Full chat interface with React-based UI
+- **Model Selection** — Choose your preferred AI model
+- **Tool Selection** — Choose (Google search, Url inspection, Code execution)
+- **Syntax Highlighting** — Code blocks with language detection
+- **Markdown Rendering** — Rich text formatting
+- **20+ Themes** — Personalize your experience
+- **Conversation History** — Browse and continue past chats
+- **Secure Auth** — OAuth 2.0 device flow
+- **Cross-Platform** — macOS, Windows, Linux
 
 ### Coming Soon
 
-We're actively building features that'll make Cero your go-to terminal assistant:
-
-- **💾 Offline-First History** — Your chat history syncs both locally and to the cloud. No internet? No problem. You can still browse all your previous conversations.
-
-- **🤖 Agent Mode** — Full-blown AI agent that can iterate on tasks, explore your codebase, and actually get work done. Similar to Copilot's agent or Cursor, but in your terminal.
-
-- **📂 Codebase Context** — Since Cero runs in your terminal, it has full context of your current project. It knows what you're working on and can give you specific, relevant answers.
-
-- **🔧 Tool Integration** —
-  - Context7 for up-to-date library documentation
-  - Brave Search API for web searches
-  - URL inspection for fetching and analyzing web content
-  - Git integration for commit history and branch context
-  - File operations with permission controls
-
-- **🎨 Multi-Model Support** — Choose between GPT-4, Claude, Gemini, and more.
-
-Want to follow along or contribute? Check out our [GitHub repository](https://github.com/AbhishekSinghDev/cerocode).
+- **Offline-First History** — Local + cloud sync
+- **Agent Mode** — AI that iterates on tasks and explores your codebase
+- **Codebase Context** — Project-aware answers
+- **Multi-Model** — GPT, Claude
 
 ## Requirements
 
-- Bun 1.0.0 or higher
+- Bun 1.0.0+
 - A browser for authentication
 
 ## Development
 
-Want to contribute or run this locally?
-
 ```bash
-# Clone the repo
 git clone https://github.com/AbhishekSinghDev/cerocode.git
 cd cerocode/apps/cero-cli
-
-# Install dependencies
 bun install
-
-# Run in development mode
 bun dev
-
-# To run commands in dev mode
-bun dev <command>
-
-# Build for production
-bun build
 ```
 
 ## Tech Stack
 
-- **Runtime**: Bun 1+
+- **Runtime**: Bun
 - **Language**: TypeScript
-- **CLI Framework**: Commander.js
-- **TUI Framework**: OpenTUI (React-based terminal UI)
-- **Auth Client**: Better Auth
-- **Auth Storage**: cross-keychain (native credential managers)
-- **HTTP Client**: Fetch API
+- **CLI**: Commander.js
+- **TUI**: OpenTUI (React-based)
+- **Auth**: Better Auth + cross-keychain
 - **Styling**: Chalk, Figlet, Boxen
 
 ## License
