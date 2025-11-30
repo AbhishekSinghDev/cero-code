@@ -1,6 +1,6 @@
 {
   "name": "cero-api",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "module",
   "scripts": {
     "build": "next build",
@@ -23,6 +23,7 @@
     "@neondatabase/serverless": "^1.0.2",
     "@paralleldrive/cuid2": "^3.0.4",
     "@t3-oss/env-nextjs": "^0.13.8",
+    "@toon-format/toon": "^2.0.1",
     "ai": "^5.0.98",
     "better-auth": "^1.4.1",
     "date-fns": "^4.1.0",

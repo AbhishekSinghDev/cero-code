@@ -1,10 +1,14 @@
 import { inngestChatFunctionSchema } from "@/lib/zod-schema";
 import { db } from "@/server/db";
 import { message } from "@/server/db/schema";
+import { MAX_CONTEXT_MESSAGES } from "@/server/utils/constants";
+import { SYSTEM_GEMINI_PROMPT } from "@/server/utils/prompts/gemini";
 import { tryCatch } from "@/server/utils/try-catch";
 import type { RealtimeContext } from "@/types/inngest";
 import { google } from "@ai-sdk/google";
+import { encode } from "@toon-format/toon";
 import { streamText } from "ai";
+import { desc, eq } from "drizzle-orm";
 import { chatChannel } from "../channels";
 import { inngest } from "../client";
 
@@ -42,24 +46,69 @@ export const processChat = inngest.createFunction(
       });
 
       const result = await step.run("stream-ai-response", async () => {
-        const result = streamText({
-          model: google(eventData.aiModel),
-          messages: [
-            {
+        // Fetch previous messages from DB with limit for context
+        const { data: previousMessages, error: fetchError } = await tryCatch(
+          db
+            .select({
+              role: message.role,
+              content: message.content,
+            })
+            .from(message)
+            .where(eq(message.conversationId, eventData.conversationId))
+            .orderBy(desc(message.createdAt))
+            .limit(MAX_CONTEXT_MESSAGES)
+        );
+
+        if (fetchError) {
+          console.error("Error fetching previous messages:", fetchError);
+        }
+
+        // Build messages array with proper role structure
+        const messages: Array<{
+          role: "system" | "user" | "assistant";
+          content: string;
+        }> = [{ role: "system", content: SYSTEM_GEMINI_PROMPT }];
+
+        if (previousMessages && previousMessages.length > 0) {
+          const chronologicalMessages = previousMessages.reverse();
+
+          if (chronologicalMessages.length > 6) {
+            const olderMessages = chronologicalMessages.slice(0, -6);
+            const recentMessages = chronologicalMessages.slice(-6);
+
+            const compressedContext = encode(
+              olderMessages.map((m) => ({ role: m.role, content: m.content }))
+            );
+            messages.push({
               role: "system",
-              content: "You are cero",
-            },
-            {
-              role: "user",
-              content: eventData.message,
-            },
-          ],
+              content: `Previous conversation context (compressed): ${compressedContext}`,
+            });
+
+            for (const msg of recentMessages) {
+              messages.push({
+                role: msg.role as "user" | "assistant",
+                content: msg.content,
+              });
+            }
+          } else {
+            for (const msg of chronologicalMessages) {
+              messages.push({
+                role: msg.role as "user" | "assistant",
+                content: msg.content,
+              });
+            }
+          }
+        }
+
+        const streamResult = streamText({
+          model: google(eventData.aiModel),
+          messages: messages,
         });
 
         let fullText = "";
 
         // Stream each token as it arrives
-        for await (const chunk of result.textStream) {
+        for await (const chunk of streamResult.textStream) {
           fullText += chunk;
 
           // Publish each token to Realtime channel
